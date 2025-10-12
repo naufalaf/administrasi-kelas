@@ -627,7 +627,13 @@
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-lg leading-6 font-medium text-gray-900">Rekap Kehadiran Siswa</h3>
                                 <div class="flex space-x-2">
-                                    Periode sesuai filter
+                                    <select id="exportPeriodeKehadiran" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                        <option value="week">Minggu Ini</option>
+                                        <option value="month">Bulan Ini</option>
+                                        <option value="semester1">Semester 1</option>
+                                        <option value="semester2">Semester 2</option>
+                                        <option value="tahun">Tahun Ajaran</option>
+                                    </select>
                                     <button onclick="exportKehadiranToExcel()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition duration-200 flex items-center">
                                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M3 17a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zM3 5a1 1 0 011-1h12a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1V5zM11 4a1 1 0 10-2 0v4a1 1 0 102 0V4z"/>
@@ -650,7 +656,13 @@
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-lg leading-6 font-medium text-gray-900">Rekap Pembelajaran</h3>
                                 <div class="flex space-x-2">
-                                    periode sesuai filter
+                                    <select id="exportPeriodePembelajaran" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                        <option value="week">Minggu Ini</option>
+                                        <option value="month">Bulan Ini</option>
+                                        <option value="semester1">Semester 1</option>
+                                        <option value="semester2">Semester 2</option>
+                                        <option value="tahun">Tahun Ajaran</option>
+                                    </select>
                                     <button onclick="exportPembelajaranToExcel()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition duration-200 flex items-center">
                                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M3 17a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zM3 5a1 1 0 011-1h12a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1V5zM11 4a1 1 0 10-2 0v4a1 1 0 102 0V4z"/>
@@ -1626,9 +1638,7 @@
                                 else if (status === 'sakit') statusCount.sakit++;
                                 else if (status === 'ijin') statusCount.ijin++;
                                 else if (status === 'alpha') statusCount.alpha++;
-                                else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
-                                    const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);}     
-                                    statusCount.bolos += jp;
+                                else if (status === 'bolos') statusCount.bolos++;
                             });
                             
                             combinedActivities[activityKey].absensi = {
@@ -3049,9 +3059,7 @@
                             else if (status === 'sakit') statusCount.sakit++;
                             else if (status === 'ijin') statusCount.ijin++;
                             else if (status === 'alpha') statusCount.alpha++;
-                            else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
-                                const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);     
-                                statusCount.bolos += jp;
+                            else if (status === 'bolos') statusCount.bolos++;
                         });
                         
                         return `
@@ -3189,9 +3197,7 @@
                         else if (status === 'sakit') statusCount.sakit++;
                         else if (status === 'ijin') statusCount.ijin++;
                         else if (status === 'alpha') statusCount.alpha++;
-                        else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
-                            const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);     
-                            statusCount.bolos += jp;
+                        else if (status === 'bolos') statusCount.bolos++;
                     });
                     
                     container.innerHTML = `
@@ -4471,9 +4477,7 @@
                             else if (status === 'sakit') statusCount.sakit++;
                             else if (status === 'ijin') statusCount.ijin++;
                             else if (status === 'alpha') statusCount.alpha++;
-                            else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
-                                const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);     
-                                statusCount.bolos += jp;
+                            else if (status === 'bolos') statusCount.bolos++;
                         });
                         
                         combinedActivities[sessionKey].absensi = {
@@ -5402,9 +5406,7 @@
                     else if (status === 'sakit') statusCount.sakit++;
                     else if (status === 'ijin') statusCount.ijin++;
                     else if (status === 'alpha') statusCount.alpha++;
-                    else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
-                        const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);     
-                        statusCount.bolos += jp;
+                    else if (status === 'bolos') statusCount.bolos++;
                 });
                 
                 const studentsHtml = sessionData.map(student => {
