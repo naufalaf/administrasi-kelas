@@ -1638,7 +1638,7 @@
                                 else if (status === 'sakit') statusCount.sakit++;
                                 else if (status === 'ijin') statusCount.ijin++;
                                 else if (status === 'alpha') statusCount.alpha++;
-                                else if (status === 'bolos') statusCount.bolos++;
+                                else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                             });
                             
                             combinedActivities[activityKey].absensi = {
@@ -3059,7 +3059,7 @@
                             else if (status === 'sakit') statusCount.sakit++;
                             else if (status === 'ijin') statusCount.ijin++;
                             else if (status === 'alpha') statusCount.alpha++;
-                            else if (status === 'bolos') statusCount.bolos++;
+                            else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                         });
                         
                         return `
@@ -3197,7 +3197,7 @@
                         else if (status === 'sakit') statusCount.sakit++;
                         else if (status === 'ijin') statusCount.ijin++;
                         else if (status === 'alpha') statusCount.alpha++;
-                        else if (status === 'bolos') statusCount.bolos++;
+                        else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                     });
                     
                     container.innerHTML = `
@@ -3929,7 +3929,7 @@
                     else if (status === 'sakit') classSummary[kelas].sakit++;
                     else if (status === 'ijin') classSummary[kelas].ijin++;
                     else if (status === 'alpha') classSummary[kelas].alpha++;
-                    else if (status === 'bolos') classSummary[kelas].bolos++;
+                    else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                 }
             });
             
@@ -4477,7 +4477,7 @@
                             else if (status === 'sakit') statusCount.sakit++;
                             else if (status === 'ijin') statusCount.ijin++;
                             else if (status === 'alpha') statusCount.alpha++;
-                            else if (status === 'bolos') statusCount.bolos++;
+                            else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                         });
                         
                         combinedActivities[sessionKey].absensi = {
@@ -5406,7 +5406,7 @@
                     else if (status === 'sakit') statusCount.sakit++;
                     else if (status === 'ijin') statusCount.ijin++;
                     else if (status === 'alpha') statusCount.alpha++;
-                    else if (status === 'bolos') statusCount.bolos++;
+                    else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                 });
                 
                 const studentsHtml = sessionData.map(student => {
