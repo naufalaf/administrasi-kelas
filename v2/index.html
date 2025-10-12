@@ -1627,7 +1627,7 @@
                                 else if (status === 'ijin') statusCount.ijin++;
                                 else if (status === 'alpha') statusCount.alpha++;
                                 else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
-                                    const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);     
+                                    const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);}     
                                     statusCount.bolos += jp;
                             });
                             
