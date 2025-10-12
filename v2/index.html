@@ -1626,7 +1626,9 @@
                                 else if (status === 'sakit') statusCount.sakit++;
                                 else if (status === 'ijin') statusCount.ijin++;
                                 else if (status === 'alpha') statusCount.alpha++;
-                                else if (status === 'bolos') statusCount.bolos++;
+                                else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
+                                    const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);     
+                                    statusCount.bolos += jp;
                             });
                             
                             combinedActivities[activityKey].absensi = {
@@ -3047,7 +3049,9 @@
                             else if (status === 'sakit') statusCount.sakit++;
                             else if (status === 'ijin') statusCount.ijin++;
                             else if (status === 'alpha') statusCount.alpha++;
-                            else if (status === 'bolos') statusCount.bolos++;
+                            else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
+                                const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);     
+                                statusCount.bolos += jp;
                         });
                         
                         return `
@@ -3185,7 +3189,9 @@
                         else if (status === 'sakit') statusCount.sakit++;
                         else if (status === 'ijin') statusCount.ijin++;
                         else if (status === 'alpha') statusCount.alpha++;
-                        else if (status === 'bolos') statusCount.bolos++;
+                        else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
+                            const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);     
+                            statusCount.bolos += jp;
                     });
                     
                     container.innerHTML = `
@@ -4465,7 +4471,9 @@
                             else if (status === 'sakit') statusCount.sakit++;
                             else if (status === 'ijin') statusCount.ijin++;
                             else if (status === 'alpha') statusCount.alpha++;
-                            else if (status === 'bolos') statusCount.bolos++;
+                            else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
+                                const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);     
+                                statusCount.bolos += jp;
                         });
                         
                         combinedActivities[sessionKey].absensi = {
@@ -5394,7 +5402,9 @@
                     else if (status === 'sakit') statusCount.sakit++;
                     else if (status === 'ijin') statusCount.ijin++;
                     else if (status === 'alpha') statusCount.alpha++;
-                    else if (status === 'bolos') statusCount.bolos++;
+                    else if (status === 'bolos') {     // Misal kolom jam pelajaran pada data absensi disebut 'jamPelajaran' atau 'Jam Pelajaran'     
+                        const jp = Number(siswa.jamPelajaran || siswa['Jam Pelajaran'] || 1);     
+                        statusCount.bolos += jp;
                 });
                 
                 const studentsHtml = sessionData.map(student => {
