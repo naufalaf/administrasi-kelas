@@ -648,13 +648,12 @@
             
             // Submit jurnal pembelajaran
             const jurnalData = {
-                type: 'jurnal',
                 timestamp: new Date().toLocaleString('id-ID'),
                 kelas: kelas,
                 mapel: mapel,
                 materi: materi,
                 catatan: catatan,
-                jam: jam,
+                jamPelajaran: jam,
                 namaGuru: currentUser['Nama Guru']
             };
             
@@ -665,31 +664,20 @@
             radioButtons.forEach(radio => {
                 const namaSiswa = radio.name.replace('kehadiran_', '').replace(/_/g, ' ');
                 presensiData.push({
-                    type: 'kehadiran',
                     timestamp: new Date().toLocaleString('id-ID'),
                     kelas: kelas,
                     namaSiswa: namaSiswa,
                     keterangan: radio.value,
                     namaGuru: currentUser['Nama Guru'],
-                    jam: jam
+                    jamPelajaran: jam
                 });
             });
             
             try {
-                updateProcessingFeedback('Menyimpan jurnal pembelajaran...');
+                updateProcessingFeedback('Menyimpan data pembelajaran dan presensi...');
                 
-                // Submit jurnal using form submission to avoid CORS
-                await submitDataViaForm(jurnalData);
-                
-                updateProcessingFeedback(`Menyimpan presensi ${presensiData.length} siswa...`);
-                
-                // Submit presensi
-                for (let i = 0; i < presensiData.length; i++) {
-                    updateProcessingFeedback(`Menyimpan presensi siswa ${i + 1}/${presensiData.length}...`);
-                    await submitDataViaForm(presensiData[i]);
-                    // Small delay to prevent overwhelming the server
-                    await new Promise(resolve => setTimeout(resolve, 100));
-                }
+                // Submit all data in one batch (much faster!)
+                await submitBatchData(jurnalData, presensiData);
                 
                 // Update local data
                 allJurnalData.push(jurnalData);
@@ -713,43 +701,38 @@
             hideLoading('pembelajaranSubmit', 'pembelajaranSubmitText', 'pembelajaranLoader');
         }
 
-        // Submit data using fetch with proper encoding
-        async function submitDataViaForm(data) {
+        // Submit data using JSON POST (faster and more reliable)
+        async function submitDataViaJSON(data) {
             try {
-                // Create form data with proper encoding
-                const formData = new FormData();
-                
-                // Add each field separately to avoid JSON parsing issues
-                formData.append('type', data.type);
-                formData.append('timestamp', data.timestamp);
-                formData.append('namaGuru', data.namaGuru);
-                formData.append('kelas', data.kelas);
-                formData.append('jam', data.jam);
-                
-                if (data.type === 'jurnal') {
-                    formData.append('mapel', data.mapel);
-                    formData.append('materi', data.materi);
-                    formData.append('catatan', data.catatan || '');
-                } else if (data.type === 'kehadiran') {
-                    formData.append('namaSiswa', data.namaSiswa);
-                    formData.append('keterangan', data.keterangan);
-                }
-                
-                // Use fetch with no-cors mode to avoid CORS issues
                 const response = await fetch(SUBMIT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
                 });
                 
-                // Since we're using no-cors, we can't read the response
-                // but the request will still be sent to the server
-                return Promise.resolve();
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 
+                const result = await response.text();
+                return result;
             } catch (error) {
-                console.error('Submission error:', error);
+                console.error('JSON submission error:', error);
                 throw error;
             }
+        }
+
+        // Batch submit multiple records at once (much faster)
+        async function submitBatchData(jurnalData, presensiDataArray) {
+            const batchData = {
+                type: 'batch',
+                jurnal: jurnalData,
+                presensi: presensiDataArray
+            };
+            
+            return await submitDataViaJSON(batchData);
         }
 
         // Update dashboard stats with filter
@@ -831,7 +814,7 @@
                             <h4 class="font-semibold text-blue-900">${item.kelas} - ${item.mapel}</h4>
                             <span class="text-sm text-blue-600">${item.timestamp}</span>
                         </div>
-                        <p class="text-gray-700 mb-2"><strong>Durasi:</strong> ${item.jam} jam pelajaran</p>
+                        <p class="text-gray-700 mb-2"><strong>Durasi:</strong> ${item.jamPelajaran} jam pelajaran</p>
                         <p class="text-gray-700 mb-2"><strong>Materi:</strong> ${item.materi}</p>
                         ${item.catatan ? `<p class="text-gray-600"><strong>Catatan:</strong> ${item.catatan}</p>` : ''}
                     `;
@@ -884,7 +867,7 @@
                     groupedPresensi[key] = {
                         kelas: item.kelas,
                         tanggal: item.timestamp.split(' ')[0],
-                        jam: item.jam,
+                        jamPelajaran: item.jamPelajaran,
                         siswa: []
                     };
                 }
@@ -914,7 +897,7 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h4 class="font-semibold text-green-900">${group.kelas} - ${group.tanggal}</h4>
-                                <p class="text-green-700">Durasi: ${group.jam} jam pelajaran</p>
+                                <p class="text-green-700">Durasi: ${group.jamPelajaran} jam pelajaran</p>
                                 <p class="text-green-600">Hadir: ${hadir}/${total} siswa</p>
                             </div>
                             <div class="text-green-600">
@@ -1053,5 +1036,5 @@
             document.getElementById('walikelasTab').classList.add('hidden');
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98d5cf0b25c64ad6',t:'MTc2MDI2Mzg0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98d5dbf021f80a32',t:'MTc2MDI2NDM2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
