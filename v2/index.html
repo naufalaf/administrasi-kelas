@@ -1638,7 +1638,10 @@
                                 else if (status === 'sakit') statusCount.sakit++;
                                 else if (status === 'ijin') statusCount.ijin++;
                                 else if (status === 'alpha') statusCount.alpha++;
-                                else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                                else if (status === 'bolos') {
+                                  const jp = parseInt(item['Jam Pelajaran'] || item['jamPelajaran'] || 1);
+                                  statusCount.bolos += isNaN(jp) ? 1 : jp;
+}
                             });
                             
                             combinedActivities[activityKey].absensi = {
@@ -3059,7 +3062,10 @@
                             else if (status === 'sakit') statusCount.sakit++;
                             else if (status === 'ijin') statusCount.ijin++;
                             else if (status === 'alpha') statusCount.alpha++;
-                            else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                            else if (status === 'bolos') {
+                              const jp = parseInt(item['Jam Pelajaran'] || item['jamPelajaran'] || 1);
+                              statusCount.bolos += isNaN(jp) ? 1 : jp;
+                            }
                         });
                         
                         return `
@@ -3197,7 +3203,10 @@
                         else if (status === 'sakit') statusCount.sakit++;
                         else if (status === 'ijin') statusCount.ijin++;
                         else if (status === 'alpha') statusCount.alpha++;
-                        else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                        else if (status === 'bolos') {
+                          const jp = parseInt(item['Jam Pelajaran'] || item['jamPelajaran'] || 1);
+                          statusCount.bolos += isNaN(jp) ? 1 : jp;
+                        }
                     });
                     
                     container.innerHTML = `
@@ -3698,7 +3707,7 @@
                     else if (status === 'ijin') summary.ijin++;
                     else if (status === 'alpha') summary.alpha++;
                     else if (status === 'bolos') {
-                        summary.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                        summary.bolos++;
                         summary.bolosJP += jamPelajaran;
                     }
                 });
@@ -3929,7 +3938,7 @@
                     else if (status === 'sakit') classSummary[kelas].sakit++;
                     else if (status === 'ijin') classSummary[kelas].ijin++;
                     else if (status === 'alpha') classSummary[kelas].alpha++;
-                    else if (status === 'bolos') classSummary[kelas].bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                    else if (status === 'bolos') classSummary[kelas].bolos++;
                 }
             });
             
@@ -4121,7 +4130,7 @@
                         else if (status === 'ijin') studentAttendance[nama].summary.ijin++;
                         else if (status === 'alpha') studentAttendance[nama].summary.alpha++;
                         else if (status === 'bolos') {
-                            studentAttendance[nama].summary.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                            studentAttendance[nama].summary.bolos++;
                             studentAttendance[nama].summary.bolosJP += jamPelajaran;
                         }
                     }
@@ -4477,7 +4486,10 @@
                             else if (status === 'sakit') statusCount.sakit++;
                             else if (status === 'ijin') statusCount.ijin++;
                             else if (status === 'alpha') statusCount.alpha++;
-                            else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                            else if (status === 'bolos') {
+                              const jp = parseInt(item['Jam Pelajaran'] || item['jamPelajaran'] || 1);
+                              statusCount.bolos += isNaN(jp) ? 1 : jp;
+                            }
                         });
                         
                         combinedActivities[sessionKey].absensi = {
@@ -4959,7 +4971,7 @@
                         else if (status === 'ijin') studentAttendance[nama].summary.ijin++;
                         else if (status === 'alpha') studentAttendance[nama].summary.alpha++;
                         else if (status === 'bolos') {
-                            studentAttendance[nama].summary.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                            studentAttendance[nama].summary.bolos++;
                             studentAttendance[nama].summary.bolosJP += jamPelajaran;
                         }
                     }
@@ -5378,7 +5390,7 @@
                         else if (status === 'ijin') studentSummary[nama].ijin++;
                         else if (status === 'alpha') studentSummary[nama].alpha++;
                         else if (status === 'bolos') {
-                            studentSummary[nama].bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                            studentSummary[nama].bolos++;
                             studentSummary[nama].bolosJP += jamPelajaranItem;
                         }
                     }
@@ -5406,7 +5418,10 @@
                     else if (status === 'sakit') statusCount.sakit++;
                     else if (status === 'ijin') statusCount.ijin++;
                     else if (status === 'alpha') statusCount.alpha++;
-                    else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                    else if (status === 'bolos') {
+                      const jp = parseInt(item['Jam Pelajaran'] || item['jamPelajaran'] || 1);
+                      statusCount.bolos += isNaN(jp) ? 1 : jp;
+                    }
                 });
                 
                 const studentsHtml = sessionData.map(student => {
