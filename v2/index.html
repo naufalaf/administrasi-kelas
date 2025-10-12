@@ -3698,7 +3698,7 @@
                     else if (status === 'ijin') summary.ijin++;
                     else if (status === 'alpha') summary.alpha++;
                     else if (status === 'bolos') {
-                        summary.bolos++;
+                        summary.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                         summary.bolosJP += jamPelajaran;
                     }
                 });
@@ -3929,7 +3929,7 @@
                     else if (status === 'sakit') classSummary[kelas].sakit++;
                     else if (status === 'ijin') classSummary[kelas].ijin++;
                     else if (status === 'alpha') classSummary[kelas].alpha++;
-                    else if (status === 'bolos') statusCount.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
+                    else if (status === 'bolos') classSummary[kelas].bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                 }
             });
             
@@ -4121,7 +4121,7 @@
                         else if (status === 'ijin') studentAttendance[nama].summary.ijin++;
                         else if (status === 'alpha') studentAttendance[nama].summary.alpha++;
                         else if (status === 'bolos') {
-                            studentAttendance[nama].summary.bolos++;
+                            studentAttendance[nama].summary.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                             studentAttendance[nama].summary.bolosJP += jamPelajaran;
                         }
                     }
@@ -4959,7 +4959,7 @@
                         else if (status === 'ijin') studentAttendance[nama].summary.ijin++;
                         else if (status === 'alpha') studentAttendance[nama].summary.alpha++;
                         else if (status === 'bolos') {
-                            studentAttendance[nama].summary.bolos++;
+                            studentAttendance[nama].summary.bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                             studentAttendance[nama].summary.bolosJP += jamPelajaran;
                         }
                     }
@@ -5378,7 +5378,7 @@
                         else if (status === 'ijin') studentSummary[nama].ijin++;
                         else if (status === 'alpha') studentSummary[nama].alpha++;
                         else if (status === 'bolos') {
-                            studentSummary[nama].bolos++;
+                            studentSummary[nama].bolos += Number(item['Jam Pelajaran'] || item.jamPelajaran || 1);
                             studentSummary[nama].bolosJP += jamPelajaranItem;
                         }
                     }
