@@ -172,13 +172,31 @@ function doPost(e) {
     // Gunakan spreadsheet dengan ID yang sudah ditentukan
     const ss = SpreadsheetApp.openById('15JuTyfVZBjLt6PIEwFewloNjcrBj4StgYkeUN0CZIvs');
     
-    // Handle data dari FormData atau JSON
+    // Handle data dari parameter form
     let data;
-    if (e.postData.contents) {
+    if (e.parameter) {
+      // Jika data dikirim sebagai field terpisah
+      if (e.parameter.idJurnal) {
+        data = {
+          idJurnal: e.parameter.idJurnal,
+          namaGuru: e.parameter.namaGuru,
+          kelas: e.parameter.kelas,
+          mataPelajaran: e.parameter.mataPelajaran,
+          materi: e.parameter.materi,
+          catatan: e.parameter.catatan || '',
+          durasiPelajaran: e.parameter.durasiPelajaran,
+          timestamp: e.parameter.timestamp,
+          presensi: JSON.parse(e.parameter.presensi || '[]')
+        };
+      } else if (e.parameter.data) {
+        // Jika data dikirim sebagai JSON string
+        data = JSON.parse(e.parameter.data);
+      }
+    } else if (e.postData && e.postData.contents) {
       data = JSON.parse(e.postData.contents);
-    } else if (e.parameter && e.parameter.data) {
-      data = JSON.parse(e.parameter.data);
-    } else {
+    }
+    
+    if (!data) {
       throw new Error('No data received');
     }
     
@@ -604,55 +622,55 @@ function testConnection() {
                 timestamp: new Date().toISOString()
             };
             
-            console.log('Mengirim data ke Google Sheets:', dataToSend);
+            console.log('📤 Mengirim data ke Google Sheets:', dataToSend);
             
             try {
-                // Metode 1: Coba dengan fetch POST sederhana
-                console.log('Mengirim data dengan fetch POST...');
+                // Metode yang lebih sederhana: langsung submit form ke iframe
+                console.log('🚀 Menggunakan metode iframe form submission...');
                 
-                const formData = new FormData();
-                formData.append('data', JSON.stringify(dataToSend));
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.name = 'submit_iframe_' + Date.now();
+                document.body.appendChild(iframe);
                 
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: formData,
-                    mode: 'no-cors'
-                });
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = SCRIPT_URL;
+                form.target = iframe.name;
+                form.style.display = 'none';
                 
-                console.log('✅ Data berhasil dikirim ke Google Apps Script via fetch');
+                // Tambahkan semua field sebagai input terpisah
+                const fields = [
+                    { name: 'idJurnal', value: dataToSend.idJurnal },
+                    { name: 'namaGuru', value: dataToSend.namaGuru },
+                    { name: 'kelas', value: dataToSend.kelas },
+                    { name: 'mataPelajaran', value: dataToSend.mataPelajaran },
+                    { name: 'materi', value: dataToSend.materi },
+                    { name: 'catatan', value: dataToSend.catatan },
+                    { name: 'durasiPelajaran', value: dataToSend.durasiPelajaran },
+                    { name: 'timestamp', value: dataToSend.timestamp },
+                    { name: 'presensi', value: JSON.stringify(dataToSend.presensi) }
+                ];
                 
-                // Metode 2: Gunakan iframe form submission sebagai backup
-                setTimeout(() => {
-                    console.log('Mengirim ulang dengan iframe form untuk memastikan...');
-                    
-                    const iframe = document.createElement('iframe');
-                    iframe.style.display = 'none';
-                    iframe.name = 'backup_iframe_' + Date.now();
-                    document.body.appendChild(iframe);
-                    
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = SCRIPT_URL;
-                    form.target = iframe.name;
-                    form.style.display = 'none';
-                    
+                fields.forEach(field => {
                     const input = document.createElement('input');
                     input.type = 'hidden';
-                    input.name = 'data';
-                    input.value = JSON.stringify(dataToSend);
+                    input.name = field.name;
+                    input.value = field.value;
                     form.appendChild(input);
-                    
-                    document.body.appendChild(form);
-                    form.submit();
-                    
-                    // Cleanup setelah 5 detik
-                    setTimeout(() => {
-                        if (document.body.contains(form)) document.body.removeChild(form);
-                        if (document.body.contains(iframe)) document.body.removeChild(iframe);
-                    }, 5000);
-                    
-                    console.log('✅ Data juga dikirim via iframe form sebagai backup');
-                }, 1000);
+                });
+                
+                document.body.appendChild(form);
+                
+                // Submit form
+                form.submit();
+                console.log('✅ Form berhasil disubmit ke Google Apps Script');
+                
+                // Cleanup setelah 10 detik
+                setTimeout(() => {
+                    if (document.body.contains(form)) document.body.removeChild(form);
+                    if (document.body.contains(iframe)) document.body.removeChild(iframe);
+                }, 10000);
                 
                 // Simpan ke localStorage sebagai backup
                 const jurnalEntry = {
@@ -681,7 +699,7 @@ function testConnection() {
                 presensiData.push(presensiEntry);
                 localStorage.setItem('presensiData', JSON.stringify(presensiData));
                 
-                showSuccessMessage('✅ Data dikirim ke Google Sheets! Cek spreadsheet dalam 5-10 detik.');
+                showSuccessMessage('✅ Data dikirim ke Google Sheets! Cek spreadsheet dalam 10-15 detik.');
                 
                 // Reset form
                 document.getElementById('form-gabungan').reset();
@@ -692,7 +710,7 @@ function testConnection() {
                 `;
                 
             } catch (error) {
-                console.error('Error mengirim data:', error);
+                console.error('❌ Error mengirim data:', error);
                 
                 // Simpan ke localStorage sebagai fallback
                 const jurnalEntry = {
@@ -896,5 +914,5 @@ function testConnection() {
             loadKelasData(); // Muat data kelas dari CSV
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98dd1991d1b63f71',t:'MTc2MDM0MDI5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98dd20a19388fdc5',t:'MTc2MDM0MDU4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
