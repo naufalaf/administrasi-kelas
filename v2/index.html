@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrasi Kelas - Jurnal & Presensi</title>
+    <title>Sistem Administrasi Kelas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -24,895 +24,2210 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
+        .tab-active {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+        .tab-inactive {
+            background: white;
+            color: #6b7280;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-full">
-    <div class="container mx-auto px-4 py-6 max-w-6xl">
-        <!-- Header -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <h1 class="text-3xl font-bold text-gray-800 text-center mb-2">📚 Administrasi Kelas</h1>
-            <p class="text-gray-600 text-center">Jurnal Pembelajaran & Presensi Siswa</p>
-        </div>
-
-        <!-- Navigation Tabs -->
-        <div class="bg-white rounded-xl shadow-lg mb-6">
-            <div class="flex border-b">
-                <button id="tab-input" class="flex-1 py-4 px-6 text-center font-semibold text-blue-600 border-b-2 border-blue-600 bg-blue-50">
-                    📝 Input Jurnal & Presensi
-                </button>
-                <button id="tab-riwayat" class="flex-1 py-4 px-6 text-center font-semibold text-gray-500 hover:text-blue-600 transition-colors">
-                    📊 Riwayat Data
-                </button>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="min-h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div class="max-w-md w-full space-y-8 p-8">
+            <div class="text-center">
+                <div class="flex justify-center mb-4">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEit19uUj7ZanvTG4uc5p6Fc8fkoORl6bLxNN-hB-9wDcw-l5IPwmpX5Q5w6lcIfFE_Qat_o3AMrLZ1jOaBu2A5IAF1sUhJJSrQe6Vf8NdvLMqafGbdbl4xgttpRbCS7dEy6PbZrUKyeutqx34O4mQTQ3Z4UtSbaoPR79ywyjwrxXUMolyZ7oro8bsRQ/s158/LOGO%20MTS4.png" 
+                         alt="Logo MTS" class="h-20 w-auto"
+                         onerror="this.style.display='none';">
+                </div>
+            <!--   <h1 class="text-4xl font-bold text-gray-800 mb-2">📚 Sistem Administrasi Kelas</h1> -->
+                <p class="text-gray-600 mb-8">📚 Sistem Administrasi Kelas</p>
             </div>
-        </div>
-
-        <!-- Input Jurnal & Presensi Tab -->
-        <div id="content-input" class="fade-in">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">📝 Input Jurnal Pembelajaran & Presensi</h2>
-                
-                <form id="form-gabungan" class="space-y-6">
-                    <!-- Bagian Jurnal -->
-                    <div class="bg-blue-50 p-6 rounded-lg">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">📖 Data Jurnal Pembelajaran</h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Guru</label>
-                                <input type="text" id="nama-guru" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan nama guru" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Kelas</label>
-                                <select id="kelas" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                                    <option value="">Pilih Kelas</option>
-                                    <!-- Kelas akan dimuat dari CSV -->
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Mata Pelajaran</label>
-                                <input type="text" id="mata-pelajaran" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Contoh: Matematika" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Durasi Pembelajaran</label>
-                                <select id="durasi-pelajaran" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
-                                    <option value="">Pilih Durasi</option>
-                                    <option value="1">1 Jam Pelajaran</option>
-                                    <option value="2">2 Jam Pelajaran</option>
-                                    <option value="3">3 Jam Pelajaran</option>
-                                    <option value="4">4 Jam Pelajaran</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Materi Pembelajaran</label>
-                            <textarea id="materi" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Jelaskan materi yang diajarkan..." required></textarea>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan Tambahan</label>
-                            <textarea id="catatan" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Catatan khusus (opsional)"></textarea>
-                        </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <form id="loginForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
+                        <input type="text" id="username" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                               placeholder="Masukkan username">
                     </div>
-
-                    <!-- Bagian Presensi -->
-                    <div class="bg-green-50 p-6 rounded-lg">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">✅ Presensi Siswa</h3>
-                        
-
-
-                        <div id="daftar-presensi" class="space-y-3 mb-4">
-                            <div class="text-center text-gray-500 py-8 border-2 border-dashed border-gray-300 rounded-lg">
-                                Pilih kelas untuk memuat daftar siswa secara otomatis
-                            </div>
-                        </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                        <input type="password" id="password" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                               placeholder="Masukkan password">
                     </div>
-
-                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-4 px-6 rounded-lg transition-all transform hover:scale-105">
-                        💾 Simpan Jurnal & Presensi
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Role</label>
+                        <select id="role" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="">Pilih Role</option>
+                            <option value="Guru">👨‍🏫 Guru</option>
+                            <option value="Wali Kelas">👩‍💼 Wali Kelas</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <span>🔐</span> Login
                     </button>
                 </form>
-            </div>
-        </div>
-
-        <!-- Riwayat Data Tab -->
-        <div id="content-riwayat" class="hidden">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">📊 Riwayat Data</h2>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Riwayat Jurnal -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4">📖 Jurnal Pembelajaran</h3>
-                        <div id="riwayat-jurnal" class="space-y-3 max-h-96 overflow-y-auto">
-                            <div class="text-center text-gray-500 py-8">
-                                Belum ada data jurnal
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Riwayat Presensi -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4">✅ Data Presensi</h3>
-                        <div id="riwayat-presensi" class="space-y-3 max-h-96 overflow-y-auto">
-                            <div class="text-center text-gray-500 py-8">
-                                Belum ada data presensi
-                            </div>
-                        </div>
+                <div id="loginError" class="hidden mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                    <div class="flex items-center gap-2">
+                        <span>❌</span>
+                        <span id="loginErrorMessage">Username atau password salah!</span>
                     </div>
                 </div>
-
-                <div class="mt-6 p-4 bg-yellow-50 rounded-lg">
-                    <h4 class="font-semibold text-yellow-800 mb-2">📋 Kode Google Apps Script</h4>
-                    <p class="text-sm text-yellow-700 mb-3">Salin kode berikut ke Google Apps Script untuk integrasi dengan Google Sheets:</p>
-                    <button id="show-script" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
-                        📄 Tampilkan Kode Script
-                    </button>
-                </div>
             </div>
-        </div>
-
-        <!-- Modal Script -->
-        <div id="modal-script" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-            <div class="bg-white rounded-xl p-6 max-w-4xl max-h-full overflow-y-auto m-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-gray-800">📄 Google Apps Script Code</h3>
-                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-                </div>
-                <div class="bg-gray-900 text-green-400 p-4 rounded-lg text-sm font-mono overflow-x-auto">
-                    <pre id="script-code">// Google Apps Script untuk Administrasi Kelas
-// SPREADSHEET ID: 15JuTyfVZBjLt6PIEwFewloNjcrBj4StgYkeUN0CZIvs
-
-// Fungsi utama untuk menerima data dari aplikasi web
-function doPost(e) {
-  try {
-    // Gunakan spreadsheet dengan ID yang sudah ditentukan
-    const ss = SpreadsheetApp.openById('15JuTyfVZBjLt6PIEwFewloNjcrBj4StgYkeUN0CZIvs');
-    
-    // Handle data dari parameter form
-    let data;
-    if (e.parameter) {
-      // Jika data dikirim sebagai field terpisah
-      if (e.parameter.idJurnal) {
-        data = {
-          idJurnal: e.parameter.idJurnal,
-          namaGuru: e.parameter.namaGuru,
-          kelas: e.parameter.kelas,
-          mataPelajaran: e.parameter.mataPelajaran,
-          materi: e.parameter.materi,
-          catatan: e.parameter.catatan || '',
-          durasiPelajaran: e.parameter.durasiPelajaran,
-          timestamp: e.parameter.timestamp,
-          presensi: JSON.parse(e.parameter.presensi || '[]')
-        };
-      } else if (e.parameter.data) {
-        // Jika data dikirim sebagai JSON string
-        data = JSON.parse(e.parameter.data);
-      }
-    } else if (e.postData && e.postData.contents) {
-      data = JSON.parse(e.postData.contents);
-    }
-    
-    if (!data) {
-      throw new Error('No data received');
-    }
-    
-    // Buat atau ambil sheet Jurnal
-    let jurnalSheet = ss.getSheetByName('Jurnal');
-    if (!jurnalSheet) {
-      jurnalSheet = ss.insertSheet('Jurnal');
-      // Tambahkan header
-      jurnalSheet.getRange(1, 1, 1, 8).setValues([
-        ['ID Jurnal', 'Timestamp', 'Nama Guru', 'Kelas', 'Mata Pelajaran', 'Materi', 'Catatan', 'Durasi Pelajaran']
-      ]);
-      // Format header
-      const headerRange = jurnalSheet.getRange(1, 1, 1, 8);
-      headerRange.setBackground('#4285f4');
-      headerRange.setFontColor('white');
-      headerRange.setFontWeight('bold');
-      headerRange.setHorizontalAlignment('center');
-    }
-    
-    // Buat atau ambil sheet Presensi
-    let presensiSheet = ss.getSheetByName('Presensi');
-    if (!presensiSheet) {
-      presensiSheet = ss.insertSheet('Presensi');
-      // Tambahkan header
-      presensiSheet.getRange(1, 1, 1, 7).setValues([
-        ['ID Jurnal', 'Timestamp', 'Nama Guru', 'Kelas', 'Nama Siswa', 'Keterangan', 'Durasi Pelajaran']
-      ]);
-      // Format header
-      const headerRange = presensiSheet.getRange(1, 1, 1, 7);
-      headerRange.setBackground('#34a853');
-      headerRange.setFontColor('white');
-      headerRange.setFontWeight('bold');
-      headerRange.setHorizontalAlignment('center');
-    }
-    
-    // Simpan data jurnal
-    jurnalSheet.appendRow([
-      data.idJurnal,
-      new Date(data.timestamp),
-      data.namaGuru,
-      data.kelas,
-      data.mataPelajaran,
-      data.materi,
-      data.catatan || '',
-      getDurasiText(data.durasiPelajaran)
-    ]);
-    
-    // Simpan data presensi
-    data.presensi.forEach(siswa => {
-      presensiSheet.appendRow([
-        data.idJurnal,
-        new Date(data.timestamp),
-        data.namaGuru,
-        data.kelas,
-        siswa.nama,
-        siswa.keterangan,
-        getDurasiText(data.durasiPelajaran)
-      ]);
-    });
-    
-    // Auto-resize kolom untuk tampilan yang rapi
-    jurnalSheet.autoResizeColumns(1, 8);
-    presensiSheet.autoResizeColumns(1, 7);
-    
-    // Format tanggal untuk kolom timestamp
-    const jurnalLastRow = jurnalSheet.getLastRow();
-    const presensiLastRow = presensiSheet.getLastRow();
-    
-    if (jurnalLastRow > 1) {
-      jurnalSheet.getRange(jurnalLastRow, 2).setNumberFormat('dd/mm/yyyy hh:mm:ss');
-    }
-    
-    if (presensiLastRow > 1) {
-      presensiSheet.getRange(presensiLastRow - data.presensi.length + 1, 2, data.presensi.length, 1)
-        .setNumberFormat('dd/mm/yyyy hh:mm:ss');
-    }
-    
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        success: true, 
-        message: 'Data berhasil disimpan ke Google Sheets',
-        idJurnal: data.idJurnal,
-        totalSiswa: data.presensi.length,
-        spreadsheetUrl: ss.getUrl()
-      }))
-      .setMimeType(ContentService.MimeType.JSON);
-      
-  } catch (error) {
-    Logger.log('Error in doPost: ' + error.toString());
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        success: false, 
-        error: error.toString()
-      }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-// Fungsi untuk mengambil data dari spreadsheet
-function doGet() {
-  try {
-    const ss = SpreadsheetApp.openById('15JuTyfVZBjLt6PIEwFewloNjcrBj4StgYkeUN0CZIvs');
-    const jurnalSheet = ss.getSheetByName('Jurnal');
-    const presensiSheet = ss.getSheetByName('Presensi');
-    
-    let jurnalData = [];
-    let presensiData = [];
-    
-    if (jurnalSheet && jurnalSheet.getLastRow() > 1) {
-      const jurnalValues = jurnalSheet.getRange(2, 1, jurnalSheet.getLastRow() - 1, 8).getValues();
-      jurnalData = jurnalValues.map(row => ({
-        idJurnal: row[0],
-        timestamp: row[1],
-        namaGuru: row[2],
-        kelas: row[3],
-        mataPelajaran: row[4],
-        materi: row[5],
-        catatan: row[6],
-        durasiPelajaran: row[7]
-      }));
-    }
-    
-    if (presensiSheet && presensiSheet.getLastRow() > 1) {
-      const presensiValues = presensiSheet.getRange(2, 1, presensiSheet.getLastRow() - 1, 7).getValues();
-      presensiData = presensiValues.map(row => ({
-        idJurnal: row[0],
-        timestamp: row[1],
-        namaGuru: row[2],
-        kelas: row[3],
-        namaSiswa: row[4],
-        keterangan: row[5],
-        durasiPelajaran: row[6]
-      }));
-    }
-    
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        success: true,
-        jurnal: jurnalData,
-        presensi: presensiData,
-        spreadsheetUrl: ss.getUrl()
-      }))
-      .setMimeType(ContentService.MimeType.JSON);
-      
-  } catch (error) {
-    Logger.log('Error in doGet: ' + error.toString());
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        success: false,
-        error: error.toString()
-      }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-// Fungsi helper untuk format durasi
-function getDurasiText(durasi) {
-  const durasiOptions = {
-    '1': '1 Jam Pelajaran',
-    '2': '2 Jam Pelajaran',
-    '3': '3 Jam Pelajaran',
-    '4': '4 Jam Pelajaran'
-  };
-  return durasiOptions[durasi] || durasi + ' Jam Pelajaran';
-}
-
-// Fungsi untuk membuat laporan harian otomatis
-function buatLaporanHarian() {
-  try {
-    const ss = SpreadsheetApp.openById('15JuTyfVZBjLt6PIEwFewloNjcrBj4StgYkeUN0CZIvs');
-    const today = new Date();
-    const todayString = Utilities.formatDate(today, Session.getScriptTimeZone(), 'yyyy-MM-dd');
-    
-    const jurnalSheet = ss.getSheetByName('Jurnal');
-    const presensiSheet = ss.getSheetByName('Presensi');
-    
-    if (!jurnalSheet || !presensiSheet) {
-      Logger.log('Sheet Jurnal atau Presensi tidak ditemukan');
-      return;
-    }
-    
-    // Buat sheet laporan jika belum ada
-    let laporanSheet = ss.getSheetByName('Laporan_' + todayString);
-    if (!laporanSheet) {
-      laporanSheet = ss.insertSheet('Laporan_' + todayString);
-    }
-    
-    // Bersihkan sheet
-    laporanSheet.clear();
-    
-    // Header laporan
-    laporanSheet.getRange(1, 1).setValue('LAPORAN HARIAN ADMINISTRASI KELAS');
-    laporanSheet.getRange(2, 1).setValue('Tanggal: ' + todayString);
-    laporanSheet.getRange(1, 1, 2, 1).setFontSize(14).setFontWeight('bold');
-    
-    // Ringkasan data hari ini
-    const jurnalData = jurnalSheet.getDataRange().getValues();
-    const presensiData = presensiSheet.getDataRange().getValues();
-    
-    // Filter data hari ini (implementasi bisa disesuaikan)
-    let jurnalHariIni = 0;
-    let totalSiswaHadir = 0;
-    
-    // Hitung statistik sederhana
-    for (let i = 1; i < jurnalData.length; i++) {
-      const tanggalJurnal = new Date(jurnalData[i][1]);
-      if (tanggalJurnal.toDateString() === today.toDateString()) {
-        jurnalHariIni++;
-      }
-    }
-    
-    for (let i = 1; i < presensiData.length; i++) {
-      const tanggalPresensi = new Date(presensiData[i][1]);
-      if (tanggalPresensi.toDateString() === today.toDateString() && presensiData[i][5] === 'Hadir') {
-        totalSiswaHadir++;
-      }
-    }
-    
-    laporanSheet.getRange(4, 1).setValue('Total Jurnal Hari Ini: ' + jurnalHariIni);
-    laporanSheet.getRange(5, 1).setValue('Total Siswa Hadir: ' + totalSiswaHadir);
-    
-    Logger.log('Laporan harian berhasil dibuat untuk tanggal: ' + todayString);
-    
-  } catch (error) {
-    Logger.log('Error membuat laporan harian: ' + error.toString());
-  }
-}
-
-// Fungsi untuk testing koneksi
-function testConnection() {
-  try {
-    const ss = SpreadsheetApp.openById('15JuTyfVZBjLt6PIEwFewloNjcrBj4StgYkeUN0CZIvs');
-    Logger.log('Koneksi berhasil ke spreadsheet: ' + ss.getName());
-    Logger.log('URL Spreadsheet: ' + ss.getUrl());
-    return true;
-  } catch (error) {
-    Logger.log('Error koneksi: ' + error.toString());
-    return false;
-  }
-}</pre>
-                </div>
-                <div class="mt-4 p-4 bg-blue-50 rounded-lg">
-                    <p class="text-sm text-blue-700">
-                        <strong>📋 Cara Setup Google Apps Script:</strong><br><br>
-                        <strong>1. Buka Google Apps Script</strong><br>
-                        → Kunjungi <a href="https://script.google.com" target="_blank" class="underline">script.google.com</a><br><br>
-                        
-                        <strong>2. Buat Project Baru</strong><br>
-                        → Klik "New Project"<br>
-                        → Hapus kode default dan paste kode di atas<br>
-                        → Save dengan nama "Administrasi Kelas"<br><br>
-                        
-                        <strong>3. Deploy sebagai Web App</strong><br>
-                        → Klik "Deploy" → "New deployment"<br>
-                        → Type: "Web app"<br>
-                        → Execute as: "Me"<br>
-                        → Who has access: "Anyone"<br>
-                        → Klik "Deploy"<br><br>
-                        
-                        <strong>4. Salin URL Deployment</strong><br>
-                        → Salin URL yang diberikan<br>
-                        → Ganti "YOUR_SCRIPT_ID" di aplikasi dengan URL tersebut<br><br>
-                        
-                        <strong>✅ Spreadsheet Target:</strong><br>
-                        ID: <code class="bg-white px-2 py-1 rounded">15JuTyfVZBjLt6PIEwFewloNjcrBj4StgYkeUN0CZIvs</code><br>
-                        Data akan otomatis tersimpan ke sheet "Jurnal" dan "Presensi"
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Success Message -->
-        <div id="success-message" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden">
-            ✅ Data berhasil disimpan!
         </div>
     </div>
 
+    <div id="mainApp" class="hidden">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex-1"></div>
+                <div class="flex-1 text-center">
+                    <div class="flex justify-center items-center gap-4 mb-2">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEit19uUj7ZanvTG4uc5p6Fc8fkoORl6bLxNN-hB-9wDcw-l5IPwmpX5Q5w6lcIfFE_Qat_o3AMrLZ1jOaBu2A5IAF1sUhJJSrQe6Vf8NdvLMqafGbdbl4xgttpRbCS7dEy6PbZrUKyeutqx34O4mQTQ3Z4UtSbaoPR79ywyjwrxXUMolyZ7oro8bsRQ/s158/LOGO%20MTS4.png" 
+                             alt="Logo MTS" class="h-16 w-auto"
+                             onerror="this.style.display='none';">
+                        <h1 class="text-4xl font-bold text-gray-800">📚 Sistem Administrasi Kelas</h1>
+                    </div>
+                    <p class="text-gray-600">Input Jurnal Agenda & Presensi Siswa</p>
+                </div>
+                <div class="flex-1 text-right">
+                    <div class="bg-white rounded-lg px-4 py-2 shadow-md inline-block">
+                        <div class="flex items-center gap-3">
+                            <div class="text-right">
+                                <p class="text-sm text-gray-600">Selamat datang,</p>
+                                <p class="font-semibold text-gray-800" id="welcomeUser">-</p>
+                                <p class="text-xs text-blue-600" id="userRole">-</p>
+                                <button onclick="logout()" class="text-xs text-red-600 hover:text-red-800 mt-1">Logout</button>
+                            </div>
+                            <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
+                                <img id="profilePhoto" src="" alt="Profile" class="w-full h-full object-cover" 
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="w-full h-full bg-blue-500 text-white flex items-center justify-center text-lg font-bold" style="display: none;" id="profileInitial">
+                                    ?
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="bg-white rounded-xl shadow-lg mb-6 p-2">
+            <div class="flex gap-2" id="tabNavigation">
+                <button id="tabInput" onclick="switchTab('input')" 
+                        class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2">
+                    <span>📝</span> Input Data
+                </button>
+                <button id="tabDashboard" onclick="switchTab('dashboard')" 
+                        class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2">
+                    <span>📊</span> Dashboard
+                </button>
+                <button id="tabRekapHarian" onclick="switchTab('rekapHarian')" 
+                        class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2" style="display: none;">
+                    <span>📅</span> Rekap Presensi Harian
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="inputTab" class="tab-content">
+            <!-- Main Form -->
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+            <form id="adminForm" class="space-y-6">
+                <!-- Info Dasar -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Guru</label>
+                        <input type="text" id="namaGuru" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Kelas</label>
+                        <select id="kelas" required onchange="loadSiswaByKelas(this.value)"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="">Pilih Kelas</option>
+                            <!-- Options will be loaded from CSV -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Mata Pelajaran</label>
+                        <input type="text" id="mataPelajaran" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Jam Pelajaran</label>
+                        <select id="jamPelajaran" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="">Pilih Durasi</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Jurnal Section -->
+                <div class="border-t pt-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">📝 Jurnal Agenda</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Materi Pembelajaran</label>
+                            <textarea id="materi" required rows="3"
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                      placeholder="Jelaskan materi yang diajarkan..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan Tambahan</label>
+                            <textarea id="catatan" rows="2"
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                      placeholder="Catatan khusus atau kendala (opsional)"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presensi Section -->
+                <div class="border-t pt-6">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold text-gray-800">👥 Presensi Siswa</h3>
+                    </div>
+                    <div id="presensiContainer" class="space-y-3">
+                        <!-- Student rows will be added here -->
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="border-t pt-6">
+                    <button type="submit" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <span>💾</span> Simpan Data Administrasi
+                    </button>
+                </div>
+            </form>
+            </div>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="hidden bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg mb-6">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl">✅</span>
+                    <span class="font-semibold">Data berhasil disimpan!</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rekap Presensi Harian Tab -->
+        <div id="rekapHarianTab" class="tab-content hidden">
+            <!-- Header -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                        <span>📅</span> Rekap Presensi Harian
+                    </h2>
+                    <button onclick="refreshRekapHarian()" 
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                        <span>🔄</span> Refresh Data
+                    </button>
+                </div>
+                
+                <!-- Filter Section -->
+                <div class="grid md:grid-cols-3 gap-4 mb-6" id="rekapFilterContainer">
+                    <div id="rekapKelasFilterDiv">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                        <select id="rekapFilterKelas" onchange="generateRekapHarian()" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Pilih Kelas</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Periode Waktu</label>
+                        <select id="rekapPeriode" onchange="applyRekapPeriodFilter()" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Pilih Periode</option>
+                            <option value="hari-ini">📅 Hari Ini</option>
+                            <option value="kemarin">📅 Kemarin</option>
+                            <option value="minggu-ini">📊 Minggu Ini</option>
+                            <option value="minggu-lalu">📊 Minggu Lalu</option>
+                            <option value="bulan-ini">📈 Bulan Ini</option>
+                            <option value="bulan-lalu">📈 Bulan Lalu</option>
+                            <option value="semester-1">🎓 Semester 1 (Jul-Des)</option>
+                            <option value="semester-2">🎓 Semester 2 (Jan-Jun)</option>
+                            <option value="tahun-ini">📆 Tahun Ini</option>
+                            <option value="custom">⚙️ Custom Range</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tahun</label>
+                        <select id="rekapTahun" onchange="generateRekapHarian()" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Pilih Tahun</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Custom Date Range (Hidden by default) -->
+                <div id="rekapCustomDateRange" class="hidden mb-6 grid md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Dari</label>
+                        <input type="date" id="rekapTanggalDari" onchange="generateRekapHarian()" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Sampai</label>
+                        <input type="date" id="rekapTanggalSampai" onchange="generateRekapHarian()" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                
+                <!-- Summary Cards -->
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-green-100 text-sm">Total Hadir</p>
+                                <p id="rekapTotalHadir" class="text-2xl font-bold">0</p>
+                            </div>
+                            <span class="text-3xl opacity-80">✅</span>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-4 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-yellow-100 text-sm">Total Sakit</p>
+                                <p id="rekapTotalSakit" class="text-2xl font-bold">0</p>
+                            </div>
+                            <span class="text-3xl opacity-80">🤒</span>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-blue-100 text-sm">Total Izin</p>
+                                <p id="rekapTotalIzin" class="text-2xl font-bold">0</p>
+                            </div>
+                            <span class="text-3xl opacity-80">📝</span>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-red-100 text-sm">Total Alpha</p>
+                                <p id="rekapTotalAlpha" class="text-2xl font-bold">0</p>
+                            </div>
+                            <span class="text-3xl opacity-80">❌</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rekap Table -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                        <span>📋</span> Detail Rekap Presensi
+                    </h3>
+                    <div class="flex gap-2">
+                        <button onclick="exportRekapToCSV()" 
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                            <span>📊</span> Export CSV
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50" id="rekapTableHeader">
+                            <tr>
+                                <th class="px-3 py-2 text-left sticky left-0 bg-gray-50 z-10">Nama Siswa</th>
+                                <!-- Dynamic date columns will be added here -->
+                                <th class="px-3 py-2 text-left bg-green-50">Total Hadir</th>
+                                <th class="px-3 py-2 text-left bg-yellow-50">Total Sakit</th>
+                                <th class="px-3 py-2 text-left bg-blue-50">Total Izin</th>
+                                <th class="px-3 py-2 text-left bg-red-50">Total Alpha</th>
+                                <th class="px-3 py-2 text-left bg-purple-50">Total Bolos (Jam)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rekapHarianTableBody">
+                            <tr>
+                                <td colspan="6" class="px-3 py-8 text-center text-gray-500">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <span class="text-4xl">📅</span>
+                                        <span>Pilih periode untuk melihat rekap presensi</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboardTab" class="tab-content hidden">
+            <!-- Dashboard Header -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                        <span>📊</span> Dashboard Administrasi
+                    </h2>
+                    <button onclick="refreshDashboard()" 
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                        <span>🔄</span> Refresh Data
+                    </button>
+                </div>
+                
+                <!-- Statistics Cards -->
+                <div class="grid md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-blue-100">Total Jurnal</p>
+                                <p id="totalJurnal" class="text-3xl font-bold">0</p>
+                            </div>
+                            <span class="text-4xl opacity-80">📝</span>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-green-100">Total Presensi</p>
+                                <p id="totalPresensi" class="text-3xl font-bold">0</p>
+                            </div>
+                            <span class="text-4xl opacity-80">👥</span>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-purple-100">Tingkat Kehadiran</p>
+                                <p id="tingkatKehadiran" class="text-3xl font-bold">0%</p>
+                            </div>
+                            <span class="text-4xl opacity-80">📈</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">🔍 Filter Data</h3>
+                <div class="grid md:grid-cols-2 gap-4" id="dashboardFilterContainer">
+                    <div id="kelasFilterDiv">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                        <select id="filterKelas" onchange="applyFilters()" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Semua Kelas</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Periode Waktu</label>
+                        <select id="filterPeriode" onchange="applyPeriodFilter()" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Semua Data</option>
+                            <option value="hari-ini">📅 Hari Ini</option>
+                            <option value="kemarin">📅 Kemarin</option>
+                            <option value="minggu-ini">📊 Minggu Ini</option>
+                            <option value="minggu-lalu">📊 Minggu Lalu</option>
+                            <option value="bulan-ini">📈 Bulan Ini</option>
+                            <option value="bulan-lalu">📈 Bulan Lalu</option>
+                            <option value="semester-1">🎓 Semester 1 (Jul-Des)</option>
+                            <option value="semester-2">🎓 Semester 2 (Jan-Jun)</option>
+                            <option value="tahun-ini">📆 Tahun Ini</option>
+                            <option value="custom">⚙️ Custom Range</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Custom Date Range (Hidden by default) -->
+                <div id="customDateRange" class="hidden mt-4 grid md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Dari</label>
+                        <input type="date" id="filterTanggalDari" onchange="applyFilters()" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Sampai</label>
+                        <input type="date" id="filterTanggalSampai" onchange="applyFilters()" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Combined Data Table -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                        <span>📋</span> Data Jurnal & Presensi
+                    </h3>
+                    <div class="flex gap-2">
+                        <button onclick="exportToCSV('combined')" 
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                            <span>📊</span> Export CSV
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-2 text-left">ID Jurnal</th>
+                                <th class="px-3 py-2 text-left">Tanggal</th>
+                                <th class="px-3 py-2 text-left">Guru</th>
+                                <th class="px-3 py-2 text-left">Kelas</th>
+                                <th class="px-3 py-2 text-left">Mata Pelajaran</th>
+                                <th class="px-3 py-2 text-left">Materi</th>
+                                <th class="px-3 py-2 text-left">Jam Pelajaran</th>
+                                <th class="px-3 py-2 text-left">Siswa Hadir</th>
+                                <th class="px-3 py-2 text-left">Siswa Sakit</th>
+                                <th class="px-3 py-2 text-left">Siswa Izin</th>
+                                <th class="px-3 py-2 text-left">Siswa Alpha</th>
+                                <th class="px-3 py-2 text-left">Siswa Bolos</th>
+                                <th class="px-3 py-2 text-left">Total Siswa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="combinedTableBody">
+                            <tr>
+                                <td colspan="13" class="px-3 py-8 text-center text-gray-500">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <span class="text-4xl">📊</span>
+                                        <span>Memuat data...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
     <script>
-        // State management
-        let currentJurnal = null;
+        let studentCount = 0;
         let jurnalData = [];
         let presensiData = [];
-        let kelasData = {};
-        
-        // URL CSV untuk data kelas
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8PjE1NIfkkBcTl1djKRGgZuwXSsSwAphbxzV_qlJ4qNThWW_ZQh1AJ647vIjBeoexz4sw-8WRLg-d/pub?gid=209740916&single=true&output=csv';
-        
-        // Fungsi untuk memuat data CSV
-        async function loadKelasData() {
+        let combinedData = [];
+        let filteredData = [];
+        let kelasOptions = [];
+        let siswaData = [];
+
+        // CSV URLs
+        const CSV_URLS = {
+            jurnal: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8PjE1NIfkkBcTl1djKRGgZuwXSsSwAphbxzV_qlJ4qNThWW_ZQh1AJ647vIjBeoexz4sw-8WRLg-d/pub?gid=636350518&single=true&output=csv',
+            presensi: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8PjE1NIfkkBcTl1djKRGgZuwXSsSwAphbxzV_qlJ4qNThWW_ZQh1AJ647vIjBeoexz4sw-8WRLg-d/pub?gid=1687404390&single=true&output=csv',
+            kelas: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8PjE1NIfkkBcTl1djKRGgZuwXSsSwAphbxzV_qlJ4qNThWW_ZQh1AJ647vIjBeoexz4sw-8WRLg-d/pub?gid=209740916&single=true&output=csv',
+            siswa: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8PjE1NIfkkBcTl1djKRGgZuwXSsSwAphbxzV_qlJ4qNThWW_ZQh1AJ647vIjBeoexz4sw-8WRLg-d/pub?gid=209740916&single=true&output=csv',
+            login: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8PjE1NIfkkBcTl1djKRGgZuwXSsSwAphbxzV_qlJ4qNThWW_ZQh1AJ647vIjBeoexz4sw-8WRLg-d/pub?gid=1190227131&single=true&output=csv'
+        };
+
+        // Tab switching function
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.getElementById('inputTab').classList.add('hidden');
+            document.getElementById('dashboardTab').classList.add('hidden');
+            document.getElementById('rekapHarianTab').classList.add('hidden');
+            
+            // Remove active class from all tab buttons
+            document.getElementById('tabInput').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
+            document.getElementById('tabDashboard').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
+            document.getElementById('tabRekapHarian').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
+            
+            // Show selected tab and activate button
+            if (tabName === 'input') {
+                document.getElementById('inputTab').classList.remove('hidden');
+                document.getElementById('tabInput').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
+            } else if (tabName === 'dashboard') {
+                document.getElementById('dashboardTab').classList.remove('hidden');
+                document.getElementById('tabDashboard').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
+                loadDashboardData();
+            } else if (tabName === 'rekapHarian') {
+                document.getElementById('rekapHarianTab').classList.remove('hidden');
+                document.getElementById('tabRekapHarian').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
+                initializeRekapHarian();
+            }
+        }
+
+        // Load kelas options and siswa data from CSV
+        async function loadKelasOptions() {
             try {
-                const response = await fetch(csvUrl);
+                const response = await fetch(CSV_URLS.kelas);
                 const csvText = await response.text();
                 const lines = csvText.split('\n');
                 
-                // Skip header (baris pertama)
+                kelasOptions = [];
+                siswaData = [];
+                
+                // Parse CSV data
+                const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+                
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (line) {
-                        const columns = line.split(',');
-                        if (columns.length >= 2) {
-                            const kelas = columns[0].trim().replace(/"/g, '');
-                            const nama = columns[1].trim().replace(/"/g, '');
+                        const columns = line.split(',').map(col => col.replace(/"/g, '').trim());
+                        
+                        // Assuming CSV structure: Kelas, Nama Siswa, ...
+                        if (columns[0] && columns[1]) {
+                            const kelas = columns[0];
+                            const namaSiswa = columns[1];
                             
-                            if (kelas && nama) {
-                                if (!kelasData[kelas]) {
-                                    kelasData[kelas] = [];
-                                }
-                                kelasData[kelas].push(nama);
+                            // Add to kelas options if not already exists
+                            if (!kelasOptions.includes(kelas)) {
+                                kelasOptions.push(kelas);
                             }
+                            
+                            // Add to siswa data
+                            siswaData.push({
+                                kelas: kelas,
+                                nama: namaSiswa
+                            });
                         }
                     }
                 }
                 
-                // Populate dropdown kelas
-                const kelasSelect = document.getElementById('kelas');
-                const sortedKelas = Object.keys(kelasData).sort();
-                
-                sortedKelas.forEach(kelas => {
-                    const option = document.createElement('option');
-                    option.value = kelas;
-                    option.textContent = kelas;
-                    kelasSelect.appendChild(option);
+                // Remove duplicates and sort kelas options properly for SMP
+                kelasOptions = [...new Set(kelasOptions)]; // Remove duplicates
+                kelasOptions.sort((a, b) => {
+                    // For SMP classes like "VII A", "VII B", "VIII A", etc.
+                    const romanNumerals = { 'VII': 7, 'VIII': 8, 'IX': 9, 'X': 10, 'XI': 11, 'XII': 12 };
+                    
+                    // Extract roman numeral and class letter
+                    const matchA = a.match(/^([IVX]+)\s*([A-Z]?)$/);
+                    const matchB = b.match(/^([IVX]+)\s*([A-Z]?)$/);
+                    
+                    if (matchA && matchB) {
+                        const gradeA = romanNumerals[matchA[1]] || 0;
+                        const gradeB = romanNumerals[matchB[1]] || 0;
+                        
+                        if (gradeA !== gradeB) {
+                            return gradeA - gradeB;
+                        }
+                        
+                        // If same grade, sort by class letter
+                        return (matchA[2] || '').localeCompare(matchB[2] || '');
+                    }
+                    
+                    // Fallback to string comparison
+                    return a.localeCompare(b);
                 });
                 
-                console.log('Data kelas berhasil dimuat:', Object.keys(kelasData).length, 'kelas');
+                // Populate kelas dropdowns with grouped options
+                const kelasSelect = document.getElementById('kelas');
+                const filterKelasSelect = document.getElementById('filterKelas');
+                
+                // Clear existing options first (except the first default option)
+                while (kelasSelect.children.length > 1) {
+                    kelasSelect.removeChild(kelasSelect.lastChild);
+                }
+                while (filterKelasSelect.children.length > 1) {
+                    filterKelasSelect.removeChild(filterKelasSelect.lastChild);
+                }
+                
+                let currentGrade = null;
+                
+                kelasOptions.forEach(kelas => {
+                    const match = kelas.match(/^([IVX]+)\s*([A-Z]?)$/);
+                    const grade = match ? match[1] : null;
+                    
+                    // Add grade separator for main select
+                    if (grade && grade !== currentGrade) {
+                        currentGrade = grade;
+                        const separator1 = document.createElement('option');
+                        separator1.disabled = true;
+                        separator1.textContent = `--- Kelas ${grade} ---`;
+                        separator1.style.fontWeight = 'bold';
+                        separator1.style.backgroundColor = '#f3f4f6';
+                        kelasSelect.appendChild(separator1);
+                    }
+                    
+                    const option1 = document.createElement('option');
+                    option1.value = kelas;
+                    option1.textContent = kelas;
+                    kelasSelect.appendChild(option1);
+                    
+                    const option2 = document.createElement('option');
+                    option2.value = kelas;
+                    option2.textContent = kelas;
+                    filterKelasSelect.appendChild(option2);
+                });
                 
             } catch (error) {
-                console.error('Error loading CSV data:', error);
-                // Fallback ke data default jika gagal load CSV
-                kelasData = {
-                    'X-A': ['Ahmad Rizki', 'Siti Nurhaliza', 'Budi Santoso', 'Dewi Sartika', 'Eko Prasetyo'],
-                    'X-B': ['Fitri Handayani', 'Gilang Ramadhan', 'Hana Pertiwi', 'Indra Gunawan', 'Joko Widodo'],
-                    'XI-A': ['Kartika Sari', 'Lukman Hakim', 'Maya Sari', 'Nanda Pratama', 'Oki Setiana'],
-                    'XI-B': ['Putri Ayu', 'Qori Sumantri', 'Rina Marlina', 'Sandi Permana', 'Tari Wulandari'],
-                    'XII-A': ['Umar Bakri', 'Vina Panduwinata', 'Wahyu Hidayat', 'Xenia Gratia', 'Yudi Latif'],
-                    'XII-B': ['Zahra Aulia', 'Andi Lala', 'Bella Saphira', 'Citra Kirana', 'Dimas Anggara']
-                };
-                
-                const kelasSelect = document.getElementById('kelas');
-                Object.keys(kelasData).forEach(kelas => {
-                    const option = document.createElement('option');
-                    option.value = kelas;
-                    option.textContent = kelas;
-                    kelasSelect.appendChild(option);
-                });
+                console.error('Error loading kelas options:', error);
             }
         }
 
-        // Tab navigation
-        document.getElementById('tab-input').addEventListener('click', () => showTab('input'));
-        document.getElementById('tab-riwayat').addEventListener('click', () => showTab('riwayat'));
-
-        function showTab(tab) {
-            // Hide all content
-            document.getElementById('content-input').classList.add('hidden');
-            document.getElementById('content-riwayat').classList.add('hidden');
-            
-            // Reset tab styles
-            document.querySelectorAll('[id^="tab-"]').forEach(t => {
-                t.className = 'flex-1 py-4 px-6 text-center font-semibold text-gray-500 hover:text-blue-600 transition-colors';
-            });
-            
-            // Show selected content and highlight tab
-            document.getElementById(`content-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).className = 'flex-1 py-4 px-6 text-center font-semibold text-blue-600 border-b-2 border-blue-600 bg-blue-50';
-            
-            if (tab === 'riwayat') {
-                loadRiwayatData();
-            }
-        }
-
-        // URL Google Apps Script (sudah terhubung ke deployment Anda)
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyMlCPy-tUdbW09dmFTn_-dbg2T2EQV_G-5bGlrGLdLZ-PJiIolUiXsyMaCierGL2Fq/exec';
-        
-        // Form gabungan submission
-        document.getElementById('form-gabungan').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitButton = document.querySelector('button[type="submit"]');
-            const originalText = submitButton.innerHTML;
-            submitButton.innerHTML = '⏳ Menyimpan...';
-            submitButton.disabled = true;
-            
-            const idJurnal = 'JRN' + Date.now();
-            const namaGuru = document.getElementById('nama-guru').value;
-            const kelas = document.getElementById('kelas').value;
-            const mataPelajaran = document.getElementById('mata-pelajaran').value;
-            const materi = document.getElementById('materi').value;
-            const catatan = document.getElementById('catatan').value;
-            const durasiPelajaran = document.getElementById('durasi-pelajaran').value;
-            
-            // Validasi presensi
-            const daftarPresensi = document.getElementById('daftar-presensi');
-            const siswaElements = daftarPresensi.children;
-            
-            if (siswaElements.length === 0 || (siswaElements.length === 1 && siswaElements[0].classList.contains('text-center'))) {
-                alert('Silakan tambahkan minimal satu siswa untuk presensi!');
-                submitButton.innerHTML = originalText;
-                submitButton.disabled = false;
+        // Load siswa by selected kelas
+        function loadSiswaByKelas(selectedKelas) {
+            if (!selectedKelas) {
+                // Clear presensi container
+                document.getElementById('presensiContainer').innerHTML = '';
+                studentCount = 0;
                 return;
             }
             
-            // Kumpulkan data presensi
-            const presensiList = [];
-            for (let element of siswaElements) {
-                if (!element.classList.contains('text-center')) {
-                    const nama = element.querySelector('.siswa-nama').textContent;
-                    const keterangan = element.querySelector('input[type="radio"]:checked').value;
-                    presensiList.push({ nama, keterangan });
+            // Filter siswa by kelas
+            const siswaKelas = siswaData.filter(siswa => siswa.kelas === selectedKelas);
+            
+            // Clear existing presensi container
+            const container = document.getElementById('presensiContainer');
+            container.innerHTML = '';
+            studentCount = 0;
+            
+            // Add siswa from selected kelas only
+            siswaKelas.forEach(siswa => {
+                addStudentRow(siswa.nama);
+            });
+        }
+
+        // Modified add student row function
+        function addStudentRow(namaSiswa = '') {
+            studentCount++;
+            const container = document.getElementById('presensiContainer');
+            const studentRow = document.createElement('div');
+            studentRow.className = 'bg-gray-50 p-4 rounded-lg fade-in';
+            studentRow.innerHTML = `
+                <div class="mb-3">
+                    <input type="text" placeholder="Nama Siswa" required value="${namaSiswa}" readonly
+                           class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700"
+                           name="namaSiswa[]">
+                </div>
+                <div class="flex gap-2 flex-wrap">
+                    <label class="flex items-center gap-2 bg-green-100 px-3 py-2 rounded-lg cursor-pointer hover:bg-green-200 transition-colors">
+                        <input type="radio" name="keterangan_${studentCount}" value="Hadir" required class="text-green-600">
+                        <span class="text-sm font-medium text-green-700">✅ Hadir</span>
+                    </label>
+                    <label class="flex items-center gap-2 bg-yellow-100 px-3 py-2 rounded-lg cursor-pointer hover:bg-yellow-200 transition-colors">
+                        <input type="radio" name="keterangan_${studentCount}" value="Sakit" required class="text-yellow-600">
+                        <span class="text-sm font-medium text-yellow-700">🤒 Sakit</span>
+                    </label>
+                    <label class="flex items-center gap-2 bg-blue-100 px-3 py-2 rounded-lg cursor-pointer hover:bg-blue-200 transition-colors">
+                        <input type="radio" name="keterangan_${studentCount}" value="Izin" required class="text-blue-600">
+                        <span class="text-sm font-medium text-blue-700">📝 Izin</span>
+                    </label>
+                    <label class="flex items-center gap-2 bg-red-100 px-3 py-2 rounded-lg cursor-pointer hover:bg-red-200 transition-colors">
+                        <input type="radio" name="keterangan_${studentCount}" value="Alpha" required class="text-red-600">
+                        <span class="text-sm font-medium text-red-700">❌ Alpha</span>
+                    </label>
+                    <label class="flex items-center gap-2 bg-purple-100 px-3 py-2 rounded-lg cursor-pointer hover:bg-purple-200 transition-colors">
+                        <input type="radio" name="keterangan_${studentCount}" value="Bolos" required class="text-purple-600">
+                        <span class="text-sm font-medium text-purple-700">🏃 Bolos</span>
+                    </label>
+                </div>
+            `;
+            container.appendChild(studentRow);
+        }
+
+        // Parse CSV data
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n');
+            const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line) {
+                    // Handle CSV parsing more carefully for timestamp format
+                    const values = [];
+                    let currentValue = '';
+                    let inQuotes = false;
+                    
+                    for (let j = 0; j < line.length; j++) {
+                        const char = line[j];
+                        if (char === '"') {
+                            inQuotes = !inQuotes;
+                        } else if (char === ',' && !inQuotes) {
+                            values.push(currentValue.trim());
+                            currentValue = '';
+                        } else {
+                            currentValue += char;
+                        }
+                    }
+                    values.push(currentValue.trim()); // Add the last value
+                    
+                    const row = {};
+                    headers.forEach((header, index) => {
+                        row[header] = values[index] || '';
+                    });
+                    data.push(row);
                 }
             }
             
-            // Data untuk dikirim ke Google Sheets
-            const dataToSend = {
-                idJurnal,
-                namaGuru,
-                kelas,
-                mataPelajaran,
-                materi,
-                catatan,
-                durasiPelajaran,
-                presensi: presensiList,
-                timestamp: new Date().toISOString()
-            };
-            
-            console.log('📤 Mengirim data ke Google Sheets:', dataToSend);
-            
+            return data;
+        }
+
+        // Load dashboard data from CSV
+        async function loadDashboardData() {
             try {
-                // Metode yang lebih sederhana: langsung submit form ke iframe
-                console.log('🚀 Menggunakan metode iframe form submission...');
+                // Load jurnal data
+                const jurnalResponse = await fetch(CSV_URLS.jurnal);
+                const jurnalCSV = await jurnalResponse.text();
+                jurnalData = parseCSV(jurnalCSV);
                 
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.name = 'submit_iframe_' + Date.now();
-                document.body.appendChild(iframe);
+                // Load presensi data
+                const presensiResponse = await fetch(CSV_URLS.presensi);
+                const presensiCSV = await presensiResponse.text();
+                presensiData = parseCSV(presensiCSV);
                 
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = SCRIPT_URL;
-                form.target = iframe.name;
-                form.style.display = 'none';
+                // Combine data
+                combineCsvData();
                 
-                // Tambahkan semua field sebagai input terpisah
-                const fields = [
-                    { name: 'idJurnal', value: dataToSend.idJurnal },
-                    { name: 'namaGuru', value: dataToSend.namaGuru },
-                    { name: 'kelas', value: dataToSend.kelas },
-                    { name: 'mataPelajaran', value: dataToSend.mataPelajaran },
-                    { name: 'materi', value: dataToSend.materi },
-                    { name: 'catatan', value: dataToSend.catatan },
-                    { name: 'durasiPelajaran', value: dataToSend.durasiPelajaran },
-                    { name: 'timestamp', value: dataToSend.timestamp },
-                    { name: 'presensi', value: JSON.stringify(dataToSend.presensi) }
-                ];
-                
-                fields.forEach(field => {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = field.name;
-                    input.value = field.value;
-                    form.appendChild(input);
-                });
-                
-                document.body.appendChild(form);
-                
-                // Submit form
-                form.submit();
-                console.log('✅ Form berhasil disubmit ke Google Apps Script');
-                
-                // Cleanup setelah 10 detik
-                setTimeout(() => {
-                    if (document.body.contains(form)) document.body.removeChild(form);
-                    if (document.body.contains(iframe)) document.body.removeChild(iframe);
-                }, 10000);
-                
-                // Simpan ke localStorage sebagai backup
-                const jurnalEntry = {
-                    idJurnal,
-                    namaGuru,
-                    kelas,
-                    mataPelajaran,
-                    materi,
-                    catatan,
-                    durasiPelajaran,
-                    timestamp: new Date()
-                };
-                
-                jurnalData.push(jurnalEntry);
-                localStorage.setItem('jurnalData', JSON.stringify(jurnalData));
-                
-                const presensiEntry = {
-                    idJurnal,
-                    namaGuru,
-                    kelas,
-                    durasiPelajaran,
-                    timestamp: new Date(),
-                    presensi: presensiList
-                };
-                
-                presensiData.push(presensiEntry);
-                localStorage.setItem('presensiData', JSON.stringify(presensiData));
-                
-                showSuccessMessage('✅ Data dikirim ke Google Sheets! Cek spreadsheet dalam 10-15 detik.');
-                
-                // Reset form
-                document.getElementById('form-gabungan').reset();
-                document.getElementById('daftar-presensi').innerHTML = `
-                    <div class="text-center text-gray-500 py-8 border-2 border-dashed border-gray-300 rounded-lg">
-                        Pilih kelas untuk memuat daftar siswa secara otomatis
-                    </div>
-                `;
+                // Update dashboard
+                updateDashboardStats();
+                updateFilterOptions();
+                applyFilters();
                 
             } catch (error) {
-                console.error('❌ Error mengirim data:', error);
+                console.error('Error loading dashboard data:', error);
+                document.getElementById('combinedTableBody').innerHTML = `
+                    <tr>
+                        <td colspan="12" class="px-3 py-8 text-center text-red-500">
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="text-4xl">❌</span>
+                                <span>Error memuat data. Periksa koneksi internet.</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Combine jurnal and presensi data
+        function combineCsvData() {
+            combinedData = [];
+            
+            jurnalData.forEach(jurnal => {
+                // Find related presensi data
+                const relatedPresensi = presensiData.filter(p => p['Id Jurnal'] === jurnal['Id Jurnal']);
                 
-                // Simpan ke localStorage sebagai fallback
-                const jurnalEntry = {
-                    idJurnal,
-                    namaGuru,
-                    kelas,
-                    mataPelajaran,
-                    materi,
-                    catatan,
-                    durasiPelajaran,
-                    timestamp: new Date()
-                };
+                // Count attendance
+                const hadir = relatedPresensi.filter(p => p.Keterangan === 'Hadir').length;
+                const sakit = relatedPresensi.filter(p => p.Keterangan === 'Sakit').length;
+                const izin = relatedPresensi.filter(p => p.Keterangan === 'Izin').length;
+                const alpha = relatedPresensi.filter(p => p.Keterangan === 'Alpha').length;
+                const bolos = relatedPresensi.filter(p => p.Keterangan === 'Bolos').length;
+                const total = relatedPresensi.length;
                 
-                jurnalData.push(jurnalEntry);
-                localStorage.setItem('jurnalData', JSON.stringify(jurnalData));
+                combinedData.push({
+                    idJurnal: jurnal['Id Jurnal'],
+                    timestamp: jurnal.Timestamp,
+                    namaGuru: jurnal['Nama Guru'],
+                    kelas: jurnal.Kelas,
+                    mataPelajaran: jurnal['Mata Pelajaran'],
+                    materi: jurnal.Materi,
+                    jamPelajaran: jurnal['Jam Pelajaran'] || jurnal.Durasi,
+                    hadir: hadir,
+                    sakit: sakit,
+                    izin: izin,
+                    alpha: alpha,
+                    bolos: bolos,
+                    total: total
+                });
+            });
+        }
+
+        // Update dashboard statistics
+        function updateDashboardStats() {
+            // Use filtered data for statistics
+            const dataToUse = filteredData.length > 0 ? filteredData : combinedData;
+            
+            document.getElementById('totalJurnal').textContent = dataToUse.length;
+            
+            // Calculate total presensi from filtered data
+            const totalPresensiCount = dataToUse.reduce((sum, item) => sum + item.total, 0);
+            document.getElementById('totalPresensi').textContent = totalPresensiCount;
+            
+            // Calculate attendance rate from filtered data
+            const totalHadir = dataToUse.reduce((sum, item) => sum + item.hadir, 0);
+            const attendanceRate = totalPresensiCount > 0 ? Math.round((totalHadir / totalPresensiCount) * 100) : 0;
+            document.getElementById('tingkatKehadiran').textContent = attendanceRate + '%';
+        }
+
+        // Update filter options
+        function updateFilterOptions() {
+            // Filter options are now handled automatically based on user role
+            // No need to populate teacher filter since it's removed
+        }
+
+        // Apply period filter
+        function applyPeriodFilter() {
+            const periode = document.getElementById('filterPeriode').value;
+            const customDateRange = document.getElementById('customDateRange');
+            
+            console.log('Filter periode dipilih:', periode); // Debug
+            
+            // Show/hide custom date range
+            if (periode === 'custom') {
+                customDateRange.classList.remove('hidden');
+            } else {
+                customDateRange.classList.add('hidden');
+                // Clear custom dates when not using custom
+                document.getElementById('filterTanggalDari').value = '';
+                document.getElementById('filterTanggalSampai').value = '';
+            }
+            
+            // Set date range based on period
+            let startDate = null;
+            let endDate = null;
+            const today = new Date();
+            
+            console.log('Tanggal hari ini:', today.toDateString()); // Debug
+            
+            switch(periode) {
+                case 'hari-ini':
+                    startDate = new Date(today);
+                    endDate = new Date(today);
+                    break;
+                    
+                case 'kemarin':
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    startDate = new Date(yesterday);
+                    endDate = new Date(yesterday);
+                    break;
+                    
+                case 'minggu-ini':
+                    const startOfWeek = new Date(today);
+                    startOfWeek.setDate(today.getDate() - today.getDay());
+                    startDate = startOfWeek;
+                    endDate = new Date(today);
+                    break;
+                    
+                case 'minggu-lalu':
+                    const lastWeekEnd = new Date(today);
+                    lastWeekEnd.setDate(today.getDate() - today.getDay() - 1);
+                    const lastWeekStart = new Date(lastWeekEnd);
+                    lastWeekStart.setDate(lastWeekEnd.getDate() - 6);
+                    startDate = lastWeekStart;
+                    endDate = lastWeekEnd;
+                    break;
+                    
+                case 'bulan-ini':
+                    startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                    endDate = new Date(today);
+                    break;
+                    
+                case 'bulan-lalu':
+                    const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+                    startDate = lastMonth;
+                    endDate = lastMonthEnd;
+                    break;
+                    
+                case 'semester-1':
+                    // July to December
+                    const year = today.getMonth() >= 6 ? today.getFullYear() : today.getFullYear() - 1;
+                    startDate = new Date(year, 6, 1); // July 1st
+                    endDate = new Date(year, 11, 31); // December 31st
+                    break;
+                    
+                case 'semester-2':
+                    // January to June
+                    const year2 = today.getMonth() < 6 ? today.getFullYear() : today.getFullYear() + 1;
+                    startDate = new Date(year2, 0, 1); // January 1st
+                    endDate = new Date(year2, 5, 30); // June 30th
+                    break;
+                    
+                case 'tahun-ini':
+                    startDate = new Date(today.getFullYear(), 0, 1);
+                    endDate = new Date(today);
+                    break;
+            }
+            
+            // Debug output
+            if (startDate && endDate) {
+                console.log('Rentang filter:', startDate.toDateString(), 'sampai', endDate.toDateString());
+            }
+            
+            // Apply the filter
+            applyFiltersWithDateRange(startDate, endDate);
+        }
+
+        // Apply filters with optional date range
+        function applyFiltersWithDateRange(startDate = null, endDate = null) {
+            const filterKelas = document.getElementById('filterKelas').value;
+            const filterTanggalDari = document.getElementById('filterTanggalDari').value;
+            const filterTanggalSampai = document.getElementById('filterTanggalSampai').value;
+            
+            filteredData = combinedData.filter(item => {
+                let match = true;
                 
-                const presensiEntry = {
-                    idJurnal,
-                    namaGuru,
-                    kelas,
-                    durasiPelajaran,
-                    timestamp: new Date(),
-                    presensi: presensiList
-                };
+                // Auto-filter by current user
+                if (currentUser) {
+                    if (currentUser.Role === 'Guru') {
+                        // Guru can only see their own data
+                        const guruName = currentUser['Nama Guru'] || currentUser['Nama Lengkap'];
+                        if (item.namaGuru !== guruName) match = false;
+                    } else if (currentUser.Role === 'Wali Kelas') {
+                        const isOperator = currentUser['Wali Kelas'].toLowerCase() === 'operator';
+                        if (!isOperator) {
+                            // Regular wali kelas can only see their class data
+                            if (item.kelas !== currentUser['Wali Kelas']) match = false;
+                        }
+                        // Operator can see all classes - no additional filtering
+                    }
+                }
                 
-                presensiData.push(presensiEntry);
-                localStorage.setItem('presensiData', JSON.stringify(presensiData));
+                if (filterKelas && item.kelas !== filterKelas) match = false;
                 
-                showSuccessMessage('⚠️ Gagal kirim ke Google Sheets. Data tersimpan lokal.', 'warning');
-            } finally {
-                submitButton.innerHTML = originalText;
-                submitButton.disabled = false;
+                // Parse item date - handle Indonesian format from Google Sheets
+                const itemDateStr = item.timestamp.split(' ')[0];
+                let itemDate;
+                
+                // Handle different date formats
+                if (itemDateStr.includes('/')) {
+                    // Format: DD/MM/YYYY or MM/DD/YYYY
+                    const parts = itemDateStr.split('/');
+                    if (parts.length === 3) {
+                        // Assume DD/MM/YYYY format (Indonesian)
+                        itemDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+                    }
+                } else if (itemDateStr.includes('-')) {
+                    // Format: YYYY-MM-DD
+                    itemDate = new Date(itemDateStr);
+                } else {
+                    // Try to parse as is
+                    itemDate = new Date(itemDateStr);
+                }
+                
+                // Validate date
+                if (isNaN(itemDate.getTime())) {
+                    // If parsing failed, skip this item
+                    return match;
+                }
+                
+                // Apply period filter
+                if (startDate && endDate) {
+                    const start = new Date(startDate);
+                    start.setHours(0, 0, 0, 0);
+                    const end = new Date(endDate);
+                    end.setHours(23, 59, 59, 999);
+                    
+                    console.log('Membandingkan tanggal item:', itemDate.toDateString(), 'dengan rentang:', start.toDateString(), '-', end.toDateString()); // Debug
+                    
+                    if (itemDate < start || itemDate > end) {
+                        console.log('Item tidak masuk rentang tanggal'); // Debug
+                        match = false;
+                    }
+                }
+                
+                // Apply custom date filter (for custom range)
+                if (filterTanggalDari || filterTanggalSampai) {
+                    if (filterTanggalDari && itemDate < new Date(filterTanggalDari)) match = false;
+                    if (filterTanggalSampai && itemDate > new Date(filterTanggalSampai)) match = false;
+                }
+                
+                return match;
+            });
+            
+            updateCombinedTable();
+        }
+
+        // Apply filters (for backward compatibility)
+        function applyFilters() {
+            applyFiltersWithDateRange();
+        }
+
+        // Update combined table
+        function updateCombinedTable() {
+            const tableBody = document.getElementById('combinedTableBody');
+            
+            if (filteredData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="13" class="px-3 py-8 text-center text-gray-500">
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="text-4xl">📊</span>
+                                <span>Tidak ada data yang sesuai dengan filter</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                // Update statistics when no data
+                updateDashboardStats();
+                return;
+            }
+            
+            tableBody.innerHTML = '';
+            filteredData.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'border-b hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-3 py-2 font-mono text-xs">${item.idJurnal}</td>
+                    <td class="px-3 py-2 text-xs">${item.timestamp}</td>
+                    <td class="px-3 py-2">${item.namaGuru}</td>
+                    <td class="px-3 py-2">${item.kelas}</td>
+                    <td class="px-3 py-2">${item.mataPelajaran}</td>
+                    <td class="px-3 py-2 max-w-xs truncate" title="${item.materi}">${item.materi}</td>
+                    <td class="px-3 py-2">${item.jamPelajaran}</td>
+                    <td class="px-3 py-2 text-green-600 font-semibold">${item.hadir}</td>
+                    <td class="px-3 py-2 text-yellow-600 font-semibold">${item.sakit}</td>
+                    <td class="px-3 py-2 text-blue-600 font-semibold">${item.izin}</td>
+                    <td class="px-3 py-2 text-red-600 font-semibold">${item.alpha}</td>
+                    <td class="px-3 py-2 text-purple-600 font-semibold">${item.bolos}</td>
+                    <td class="px-3 py-2 font-bold">${item.total}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // Update statistics after table is updated
+            updateDashboardStats();
+        }
+
+        // Refresh dashboard
+        function refreshDashboard() {
+            loadDashboardData();
+        }
+
+        // Refresh dashboard after form submission
+        function refreshDashboardAfterSubmit() {
+            // Reload data from CSV to get latest updates
+            setTimeout(() => {
+                loadDashboardData();
+            }, 3000); // Wait 3 seconds for Google Sheets to update
+        }
+
+        // Add initial student rows (will be populated when kelas is selected)
+        // Initial empty state - no students until kelas is selected
+
+        // Load data from localStorage on page load
+        function loadStoredData() {
+            const storedJurnal = localStorage.getItem('jurnalData');
+            const storedPresensi = localStorage.getItem('presensiData');
+            
+            if (storedJurnal) {
+                jurnalData = JSON.parse(storedJurnal);
+            }
+            if (storedPresensi) {
+                presensiData = JSON.parse(storedPresensi);
+            }
+            
+            if (jurnalData.length > 0 || presensiData.length > 0) {
+                updatePreviewTables();
+                document.getElementById('dataPreview').classList.remove('hidden');
+            }
+        }
+
+        // Load login data
+        async function loadLoginData() {
+            try {
+                const response = await fetch(CSV_URLS.login);
+                const csvText = await response.text();
+                loginData = parseCSV(csvText);
+            } catch (error) {
+                console.error('Error loading login data:', error);
+            }
+        }
+
+        // Login function
+        async function handleLogin(username, password, role) {
+            if (loginData.length === 0) {
+                await loadLoginData();
+            }
+            
+            // Find user by username and password first
+            const user = loginData.find(u => 
+                u.Username === username && u.Password === password
+            );
+            
+            if (!user) {
+                return false; // Invalid username/password
+            }
+            
+            // Check role validation
+            if (role === 'Wali Kelas') {
+                // For Wali Kelas, check if user has a class assigned in 'Wali Kelas' column
+                // Special case: "operator" means they can access all classes
+                if (!user['Wali Kelas'] || user['Wali Kelas'].trim() === '') {
+                    return false; // User is not a wali kelas
+                }
+            } else if (role === 'Guru') {
+                // Guru role is always allowed if username/password match
+            } else {
+                return false; // Invalid role
+            }
+            
+            // Set user role and save
+            user.Role = role;
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            // Show main app
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            
+            // Update profile display
+            document.getElementById('welcomeUser').textContent = user['Nama Guru'] || user['Nama Lengkap'];
+            
+            // Handle operator role display
+            let roleDisplay = role;
+            if (role === 'Wali Kelas') {
+                if (user['Wali Kelas'].toLowerCase() === 'operator') {
+                    roleDisplay = 'Operator - Semua Kelas';
+                } else {
+                    roleDisplay = `${role} - ${user['Wali Kelas']}`;
+                }
+            }
+            document.getElementById('userRole').textContent = roleDisplay;
+            
+            // Set profile photo
+            const profilePhoto = document.getElementById('profilePhoto');
+            const profileInitial = document.getElementById('profileInitial');
+            
+            if (user.Foto && user.Foto.trim() !== '') {
+                profilePhoto.src = user.Foto;
+                profilePhoto.style.display = 'block';
+                profileInitial.style.display = 'none';
+            } else {
+                // Show initial if no photo
+                const initial = (user['Nama Guru'] || user['Nama Lengkap'] || '?').charAt(0).toUpperCase();
+                profileInitial.textContent = initial;
+                profilePhoto.style.display = 'none';
+                profileInitial.style.display = 'flex';
+            }
+            
+            // Auto-fill form fields for guru
+            if (role === 'Guru') {
+                document.getElementById('namaGuru').value = user['Nama Guru'] || user['Nama Lengkap'];
+                document.getElementById('namaGuru').readOnly = true;
+                document.getElementById('namaGuru').classList.add('bg-gray-100');
+                
+                if (user.Mapel) {
+                    document.getElementById('mataPelajaran').value = user.Mapel;
+                    document.getElementById('mataPelajaran').readOnly = true;
+                    document.getElementById('mataPelajaran').classList.add('bg-gray-100');
+                }
+            }
+            
+            // Handle role-based access
+            if (role === 'Wali Kelas') {
+                const isOperator = user['Wali Kelas'].toLowerCase() === 'operator';
+                
+                // Show rekap harian tab for wali kelas only
+                document.getElementById('tabRekapHarian').style.display = 'flex';
+                // Hide input tab for wali kelas
+                document.getElementById('tabInput').style.display = 'none';
+                
+                if (isOperator) {
+                    // Operator can see all classes - show class filter
+                    document.getElementById('kelasFilterDiv').style.display = 'block';
+                    document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-2 gap-4';
+                } else {
+                    // Regular wali kelas - hide class filter (they only see their class)
+                    document.getElementById('kelasFilterDiv').style.display = 'none';
+                    document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-1 gap-4';
+                }
+                switchTab('dashboard');
+            } else {
+                // Hide rekap harian tab for non-wali kelas
+                document.getElementById('tabRekapHarian').style.display = 'none';
+                // Show input tab for guru
+                document.getElementById('tabInput').style.display = 'flex';
+                // Show class filter for guru
+                document.getElementById('kelasFilterDiv').style.display = 'block';
+                document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-2 gap-4';
+            }
+            
+            // Load initial data
+            loadKelasOptions();
+            loadStoredData();
+            
+            return true;
+        }
+
+        // Logout function
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            
+            // Reset form
+            document.getElementById('adminForm').reset();
+            document.getElementById('namaGuru').readOnly = false;
+            document.getElementById('namaGuru').classList.remove('bg-gray-100');
+            document.getElementById('mataPelajaran').readOnly = false;
+            document.getElementById('mataPelajaran').classList.remove('bg-gray-100');
+            
+            // Reset profile display
+            document.getElementById('welcomeUser').textContent = '-';
+            document.getElementById('userRole').textContent = '-';
+            document.getElementById('profilePhoto').src = '';
+            document.getElementById('profileInitial').textContent = '?';
+            
+            // Show login screen
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            
+            // Reset tab visibility for next login
+            document.getElementById('tabInput').style.display = 'flex';
+            document.getElementById('tabRekapHarian').style.display = 'none';
+            // Reset filter visibility
+            document.getElementById('kelasFilterDiv').style.display = 'block';
+            document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-2 gap-4';
+            switchTab('input');
+        }
+
+        // Check for existing login
+        function checkExistingLogin() {
+            const storedUser = localStorage.getItem('currentUser');
+            if (storedUser) {
+                const user = JSON.parse(storedUser);
+                handleLogin(user.Username, user.Password, user.Role);
+            }
+        }
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            
+            const loginSuccess = await handleLogin(username, password, role);
+            
+            if (!loginSuccess) {
+                // Check if user exists but role is invalid
+                if (loginData.length === 0) {
+                    await loadLoginData();
+                }
+                
+                const user = loginData.find(u => 
+                    u.Username === username && u.Password === password
+                );
+                
+                let errorMessage = 'Username atau password salah!';
+                
+                if (user && role === 'Wali Kelas') {
+                    if (!user['Wali Kelas'] || user['Wali Kelas'].trim() === '') {
+                        errorMessage = 'Anda tidak terdaftar sebagai Wali Kelas!';
+                    }
+                }
+                
+                document.getElementById('loginErrorMessage').textContent = errorMessage;
+                document.getElementById('loginError').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('loginError').classList.add('hidden');
+                }, 3000);
             }
         });
 
-        function getDurasiText(durasi) {
-            const durasiOptions = {
-                '1': '1 Jam Pelajaran',
-                '2': '2 Jam Pelajaran',
-                '3': '3 Jam Pelajaran',
-                '4': '4 Jam Pelajaran'
-            };
-            return durasiOptions[durasi] || `${durasi} Jam Pelajaran`;
-        }
-
-        function addSiswaToPresensi(nama) {
-            const daftarPresensi = document.getElementById('daftar-presensi');
+        // Rekap Harian Functions
+        let rekapHarianData = [];
+        
+        // Initialize rekap harian tab
+        function initializeRekapHarian() {
+            // Populate year dropdown
+            const currentYear = new Date().getFullYear();
+            const yearSelect = document.getElementById('rekapTahun');
+            yearSelect.innerHTML = '<option value="">Pilih Tahun</option>';
             
-            // Hapus pesan placeholder jika ada
-            const placeholder = daftarPresensi.querySelector('.text-center');
-            if (placeholder) {
-                placeholder.remove();
+            for (let year = currentYear - 2; year <= currentYear + 1; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
             }
             
-            const siswaDiv = document.createElement('div');
-            siswaDiv.className = 'bg-white p-4 rounded-lg flex items-center justify-between border border-gray-200';
-            siswaDiv.innerHTML = `
-                <div class="siswa-nama font-semibold text-gray-800">${nama}</div>
-                <div class="flex gap-2">
-                    <label class="flex items-center">
-                        <input type="radio" name="presensi-${nama.replace(/\s+/g, '')}" value="Hadir" class="mr-2" checked>
-                        <span class="text-green-600 font-semibold">✅ Hadir</span>
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="presensi-${nama.replace(/\s+/g, '')}" value="Sakit" class="mr-2">
-                        <span class="text-yellow-600 font-semibold">🤒 Sakit</span>
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="presensi-${nama.replace(/\s+/g, '')}" value="Izin" class="mr-2">
-                        <span class="text-blue-600 font-semibold">📝 Izin</span>
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="presensi-${nama.replace(/\s+/g, '')}" value="Alpha" class="mr-2">
-                        <span class="text-red-600 font-semibold">❌ Alpha</span>
-                    </label>
-
-                </div>
-            `;
-            daftarPresensi.appendChild(siswaDiv);
+            // Setup class filter based on user role
+            setupRekapKelasFilter();
+            
+            // Set default to current month
+            document.getElementById('rekapPeriode').value = 'bulan-ini';
+            document.getElementById('rekapTahun').value = currentYear;
+            
+            // Load data
+            loadDashboardData().then(() => {
+                applyRekapPeriodFilter();
+            });
         }
-
-
-
-
-
-        // Auto load default saat kelas berubah
-        document.getElementById('kelas').addEventListener('change', function() {
-            const kelas = this.value;
-            if (kelas && kelasData[kelas]) {
-                // Clear existing list
-                document.getElementById('daftar-presensi').innerHTML = '';
+        
+        // Setup class filter for rekap harian
+        function setupRekapKelasFilter() {
+            const rekapKelasFilterDiv = document.getElementById('rekapKelasFilterDiv');
+            const rekapFilterContainer = document.getElementById('rekapFilterContainer');
+            const rekapFilterKelas = document.getElementById('rekapFilterKelas');
+            
+            if (!currentUser || currentUser.Role !== 'Wali Kelas') {
+                return;
+            }
+            
+            const isOperator = currentUser['Wali Kelas'].toLowerCase() === 'operator';
+            
+            if (isOperator) {
+                // Show class filter for operator
+                rekapKelasFilterDiv.style.display = 'block';
+                rekapFilterContainer.className = 'grid md:grid-cols-3 gap-4 mb-6';
                 
-                // Load default siswa
-                const siswaList = kelasData[kelas];
-                siswaList.forEach(nama => {
-                    addSiswaToPresensi(nama);
+                // Populate class options
+                rekapFilterKelas.innerHTML = '<option value="">Semua Kelas</option>';
+                kelasOptions.forEach(kelas => {
+                    const option = document.createElement('option');
+                    option.value = kelas;
+                    option.textContent = kelas;
+                    rekapFilterKelas.appendChild(option);
+                });
+            } else {
+                // Hide class filter for regular wali kelas
+                rekapKelasFilterDiv.style.display = 'none';
+                rekapFilterContainer.className = 'grid md:grid-cols-2 gap-4 mb-6';
+            }
+        }
+        
+        // Apply period filter for rekap harian
+        function applyRekapPeriodFilter() {
+            const periode = document.getElementById('rekapPeriode').value;
+            const customDateRange = document.getElementById('rekapCustomDateRange');
+            
+            // Show/hide custom date range
+            if (periode === 'custom') {
+                customDateRange.classList.remove('hidden');
+            } else {
+                customDateRange.classList.add('hidden');
+                // Clear custom dates when not using custom
+                document.getElementById('rekapTanggalDari').value = '';
+                document.getElementById('rekapTanggalSampai').value = '';
+            }
+            
+            // Set date range based on period
+            let startDate = null;
+            let endDate = null;
+            const today = new Date();
+            
+            switch(periode) {
+                case 'hari-ini':
+                    startDate = new Date(today);
+                    endDate = new Date(today);
+                    break;
+                    
+                case 'kemarin':
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    startDate = new Date(yesterday);
+                    endDate = new Date(yesterday);
+                    break;
+                    
+                case 'minggu-ini':
+                    const startOfWeek = new Date(today);
+                    startOfWeek.setDate(today.getDate() - today.getDay());
+                    startDate = startOfWeek;
+                    endDate = new Date(today);
+                    break;
+                    
+                case 'minggu-lalu':
+                    const lastWeekEnd = new Date(today);
+                    lastWeekEnd.setDate(today.getDate() - today.getDay() - 1);
+                    const lastWeekStart = new Date(lastWeekEnd);
+                    lastWeekStart.setDate(lastWeekEnd.getDate() - 6);
+                    startDate = lastWeekStart;
+                    endDate = lastWeekEnd;
+                    break;
+                    
+                case 'bulan-ini':
+                    startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                    endDate = new Date(today);
+                    break;
+                    
+                case 'bulan-lalu':
+                    const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+                    startDate = lastMonth;
+                    endDate = lastMonthEnd;
+                    break;
+                    
+                case 'semester-1':
+                    // July to December
+                    const year = today.getMonth() >= 6 ? today.getFullYear() : today.getFullYear() - 1;
+                    startDate = new Date(year, 6, 1); // July 1st
+                    endDate = new Date(year, 11, 31); // December 31st
+                    break;
+                    
+                case 'semester-2':
+                    // January to June
+                    const year2 = today.getMonth() < 6 ? today.getFullYear() : today.getFullYear() + 1;
+                    startDate = new Date(year2, 0, 1); // January 1st
+                    endDate = new Date(year2, 5, 30); // June 30th
+                    break;
+                    
+                case 'tahun-ini':
+                    startDate = new Date(today.getFullYear(), 0, 1);
+                    endDate = new Date(today);
+                    break;
+            }
+            
+            // Apply the filter
+            generateRekapHarianWithDateRange(startDate, endDate);
+        }
+        
+        // Generate rekap harian with date range
+        function generateRekapHarianWithDateRange(startDate = null, endDate = null) {
+            if (!currentUser || currentUser.Role !== 'Wali Kelas') {
+                return;
+            }
+            
+            const isOperator = currentUser['Wali Kelas'].toLowerCase() === 'operator';
+            const selectedKelas = document.getElementById('rekapFilterKelas').value;
+            
+            // Filter presensi data by class
+            let filteredPresensi = presensiData;
+            
+            if (isOperator) {
+                // Operator can filter by selected class or see all
+                if (selectedKelas) {
+                    filteredPresensi = presensiData.filter(p => p.Kelas === selectedKelas);
+                }
+                // If no class selected, show all classes
+            } else {
+                // Regular wali kelas - only their class
+                const kelasWali = currentUser['Wali Kelas'];
+                filteredPresensi = presensiData.filter(p => p.Kelas === kelasWali);
+            }
+            
+            // Apply date range filter
+            if (startDate && endDate) {
+                filteredPresensi = filteredPresensi.filter(p => {
+                    const itemDateStr = p.Timestamp.split(' ')[0];
+                    let itemDate;
+                    
+                    // Parse date (handle DD/MM/YYYY format)
+                    if (itemDateStr.includes('/')) {
+                        const parts = itemDateStr.split('/');
+                        if (parts.length === 3) {
+                            itemDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+                        }
+                    } else {
+                        itemDate = new Date(itemDateStr);
+                    }
+                    
+                    if (isNaN(itemDate.getTime())) return false;
+                    
+                    const start = new Date(startDate);
+                    start.setHours(0, 0, 0, 0);
+                    const end = new Date(endDate);
+                    end.setHours(23, 59, 59, 999);
+                    
+                    return itemDate >= start && itemDate <= end;
                 });
             }
-        });
-
-
-
-        function loadRiwayatData() {
-            // Load dari localStorage
-            jurnalData = JSON.parse(localStorage.getItem('jurnalData') || '[]');
-            presensiData = JSON.parse(localStorage.getItem('presensiData') || '[]');
             
-            // Display jurnal
-            const riwayatJurnal = document.getElementById('riwayat-jurnal');
-            if (jurnalData.length === 0) {
-                riwayatJurnal.innerHTML = '<div class="text-center text-gray-500 py-8">Belum ada data jurnal</div>';
-            } else {
-                riwayatJurnal.innerHTML = jurnalData.map(jurnal => `
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="font-semibold text-gray-800">${jurnal.mataPelajaran}</div>
-                            <div class="text-xs text-gray-500">${new Date(jurnal.timestamp).toLocaleString('id-ID')}</div>
-                        </div>
-                        <div class="text-sm text-gray-600 space-y-1">
-                            <div><strong>Guru:</strong> ${jurnal.namaGuru}</div>
-                            <div><strong>Kelas:</strong> ${jurnal.kelas} - ${getDurasiText(jurnal.durasiPelajaran)}</div>
-                            <div><strong>Materi:</strong> ${jurnal.materi}</div>
-                            ${jurnal.catatan ? `<div><strong>Catatan:</strong> ${jurnal.catatan}</div>` : ''}
-                        </div>
-                    </div>
-                `).join('');
+            // Apply custom date range if set
+            const customDari = document.getElementById('rekapTanggalDari').value;
+            const customSampai = document.getElementById('rekapTanggalSampai').value;
+            
+            if (customDari || customSampai) {
+                filteredPresensi = filteredPresensi.filter(p => {
+                    const itemDateStr = p.Timestamp.split(' ')[0];
+                    let itemDate;
+                    
+                    if (itemDateStr.includes('/')) {
+                        const parts = itemDateStr.split('/');
+                        if (parts.length === 3) {
+                            itemDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+                        }
+                    } else {
+                        itemDate = new Date(itemDateStr);
+                    }
+                    
+                    if (isNaN(itemDate.getTime())) return false;
+                    
+                    if (customDari && itemDate < new Date(customDari)) return false;
+                    if (customSampai && itemDate > new Date(customSampai)) return false;
+                    
+                    return true;
+                });
             }
             
-            // Display presensi
-            const riwayatPresensi = document.getElementById('riwayat-presensi');
-            if (presensiData.length === 0) {
-                riwayatPresensi.innerHTML = '<div class="text-center text-gray-500 py-8">Belum ada data presensi</div>';
+            // Calculate matrix-style attendance recap
+            rekapHarianData = calculateMatrixAttendance(filteredPresensi);
+            
+            // Update table and statistics
+            updateRekapMatrixTable();
+            updateRekapStatistics();
+        }
+        
+        // Generate rekap harian (backward compatibility)
+        function generateRekapHarian() {
+            const customDari = document.getElementById('rekapTanggalDari').value;
+            const customSampai = document.getElementById('rekapTanggalSampai').value;
+            
+            if (customDari && customSampai) {
+                generateRekapHarianWithDateRange(new Date(customDari), new Date(customSampai));
             } else {
-                riwayatPresensi.innerHTML = presensiData.map(presensi => `
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="font-semibold text-gray-800">${presensi.kelas} - ${getDurasiText(presensi.durasiPelajaran)}</div>
-                            <div class="text-xs text-gray-500">${new Date(presensi.timestamp).toLocaleString('id-ID')}</div>
-                        </div>
-                        <div class="text-sm text-gray-600 mb-2">
-                            <strong>Guru:</strong> ${presensi.namaGuru}
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 text-xs">
-                            ${presensi.presensi.map(siswa => `
-                                <div class="flex justify-between">
-                                    <span>${siswa.nama}</span>
-                                    <span class="font-semibold ${getKeteranganColor(siswa.keterangan)}">${siswa.keterangan}</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `).join('');
+                applyRekapPeriodFilter();
             }
         }
-
-        function getKeteranganColor(keterangan) {
-            const colors = {
-                'Hadir': 'text-green-600',
-                'Sakit': 'text-yellow-600',
-                'Izin': 'text-blue-600',
-                'Alpha': 'text-red-600'
+        
+        // Calculate matrix-style attendance (nama siswa vs tanggal)
+        function calculateMatrixAttendance(presensiData) {
+            const studentData = {};
+            const allDates = new Set();
+            
+            // Group by student and collect all dates
+            presensiData.forEach(p => {
+                const dateStr = p.Timestamp.split(' ')[0];
+                const studentName = p['Nama Siswa'];
+                
+                allDates.add(dateStr);
+                
+                if (!studentData[studentName]) {
+                    studentData[studentName] = {
+                        nama: studentName,
+                        dates: {},
+                        totalHadir: 0,
+                        totalSakit: 0,
+                        totalIzin: 0,
+                        totalAlpha: 0,
+                        totalBolosJam: 0
+                    };
+                }
+                
+                if (!studentData[studentName].dates[dateStr]) {
+                    studentData[studentName].dates[dateStr] = {
+                        hadir: 0,
+                        sakit: 0,
+                        izin: 0,
+                        alpha: 0,
+                        bolos: 0,
+                        totalJam: 0
+                    };
+                }
+                
+                const jamPelajaran = parseInt(p['Jam Pelajaran'] || 1);
+                studentData[studentName].dates[dateStr].totalJam += jamPelajaran;
+                
+                switch(p.Keterangan) {
+                    case 'Hadir':
+                        studentData[studentName].dates[dateStr].hadir += jamPelajaran;
+                        break;
+                    case 'Sakit':
+                        studentData[studentName].dates[dateStr].sakit += jamPelajaran;
+                        break;
+                    case 'Izin':
+                        studentData[studentName].dates[dateStr].izin += jamPelajaran;
+                        break;
+                    case 'Alpha':
+                        studentData[studentName].dates[dateStr].alpha += jamPelajaran;
+                        break;
+                    case 'Bolos':
+                        studentData[studentName].dates[dateStr].bolos += jamPelajaran;
+                        break;
+                }
+            });
+            
+            // Calculate daily status and totals for each student
+            Object.values(studentData).forEach(student => {
+                Object.keys(student.dates).forEach(dateStr => {
+                    const dayData = student.dates[dateStr];
+                    let dailyStatus = '';
+                    
+                    // Apply attendance rules for daily status
+                    if (dayData.bolos > 0 && dayData.hadir > 0) {
+                        dailyStatus = 'H'; // Hadir
+                        student.totalHadir += 1;
+                        student.totalBolosJam += dayData.bolos; // Count bolos in hours
+                    } else if (dayData.bolos > 0 && dayData.hadir === 0) {
+                        const bolosPercentage = dayData.bolos / dayData.totalJam;
+                        
+                        if (bolosPercentage >= 0.75) {
+                            dailyStatus = 'B'; // Bolos (as daily status)
+                            student.totalBolosJam += dayData.bolos;
+                        } else if (dayData.sakit > dayData.izin && dayData.sakit > dayData.alpha) {
+                            dailyStatus = 'S';
+                            student.totalSakit += 1;
+                            student.totalBolosJam += dayData.bolos;
+                        } else if (dayData.izin > dayData.alpha) {
+                            dailyStatus = 'I';
+                            student.totalIzin += 1;
+                            student.totalBolosJam += dayData.bolos;
+                        } else {
+                            dailyStatus = 'A';
+                            student.totalAlpha += 1;
+                            student.totalBolosJam += dayData.bolos;
+                        }
+                    } else {
+                        // Normal rules (without bolos)
+                        const nonHadirJam = dayData.sakit + dayData.izin + dayData.alpha;
+                        const nonHadirPercentage = nonHadirJam / dayData.totalJam;
+                        
+                        if (dayData.hadir > 0 && nonHadirPercentage < 0.75) {
+                            dailyStatus = 'H';
+                            student.totalHadir += 1;
+                        } else if (nonHadirPercentage >= 0.75) {
+                            if (dayData.sakit >= dayData.izin && dayData.sakit >= dayData.alpha) {
+                                dailyStatus = 'S';
+                                student.totalSakit += 1;
+                            } else if (dayData.izin >= dayData.alpha) {
+                                dailyStatus = 'I';
+                                student.totalIzin += 1;
+                            } else {
+                                dailyStatus = 'A';
+                                student.totalAlpha += 1;
+                            }
+                        } else if (dayData.hadir === 0) {
+                            if (dayData.sakit >= dayData.izin && dayData.sakit >= dayData.alpha) {
+                                dailyStatus = 'S';
+                                student.totalSakit += 1;
+                            } else if (dayData.izin >= dayData.alpha) {
+                                dailyStatus = 'I';
+                                student.totalIzin += 1;
+                            } else {
+                                dailyStatus = 'A';
+                                student.totalAlpha += 1;
+                            }
+                        } else {
+                            dailyStatus = 'H';
+                            student.totalHadir += 1;
+                        }
+                    }
+                    
+                    student.dates[dateStr].status = dailyStatus;
+                });
+            });
+            
+            // Sort dates
+            const sortedDates = Array.from(allDates).sort((a, b) => {
+                const dateA = new Date(a.split('/').reverse().join('-'));
+                const dateB = new Date(b.split('/').reverse().join('-'));
+                return dateA - dateB;
+            });
+            
+            return {
+                students: Object.values(studentData).sort((a, b) => a.nama.localeCompare(b.nama)),
+                dates: sortedDates
             };
-            return colors[keterangan] || 'text-gray-600';
         }
-
-        // Modal script
-        document.getElementById('show-script').addEventListener('click', function() {
-            document.getElementById('modal-script').classList.remove('hidden');
-            document.getElementById('modal-script').classList.add('flex');
-        });
-
-        document.getElementById('close-modal').addEventListener('click', function() {
-            document.getElementById('modal-script').classList.add('hidden');
-            document.getElementById('modal-script').classList.remove('flex');
-        });
-
-        function showSuccessMessage(text = '✅ Data berhasil disimpan!', type = 'success') {
-            const message = document.getElementById('success-message');
-            message.textContent = text;
+        
+        // Update matrix table
+        function updateRekapMatrixTable() {
+            const tableHeader = document.getElementById('rekapTableHeader');
+            const tableBody = document.getElementById('rekapHarianTableBody');
             
-            if (type === 'error') {
-                message.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg';
-            } else if (type === 'warning') {
-                message.className = 'fixed top-4 right-4 bg-yellow-500 text-white px-6 py-3 rounded-lg shadow-lg';
-            } else {
-                message.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg';
+            if (!rekapHarianData || !rekapHarianData.students || rekapHarianData.students.length === 0) {
+                // Reset header
+                tableHeader.innerHTML = `
+                    <tr>
+                        <th class="px-3 py-2 text-left sticky left-0 bg-gray-50 z-10">Nama Siswa</th>
+                        <th class="px-3 py-2 text-left bg-green-50">Total Hadir</th>
+                        <th class="px-3 py-2 text-left bg-yellow-50">Total Sakit</th>
+                        <th class="px-3 py-2 text-left bg-blue-50">Total Izin</th>
+                        <th class="px-3 py-2 text-left bg-red-50">Total Alpha</th>
+                        <th class="px-3 py-2 text-left bg-purple-50">Total Bolos (Jam)</th>
+                    </tr>
+                `;
+                
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="px-3 py-8 text-center text-gray-500">
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="text-4xl">📅</span>
+                                <span>Tidak ada data presensi untuk periode yang dipilih</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
             }
             
-            message.classList.remove('hidden');
-            message.classList.add('success-animation');
+            // Build dynamic header with dates
+            let headerHTML = `
+                <tr>
+                    <th class="px-3 py-2 text-left sticky left-0 bg-gray-50 z-10 min-w-32">Nama Siswa</th>
+            `;
+            
+            // Add date columns
+            rekapHarianData.dates.forEach(date => {
+                const shortDate = date.split('/').slice(0, 2).join('/'); // DD/MM format
+                headerHTML += `<th class="px-2 py-2 text-center text-xs min-w-12" title="${date}">${shortDate}</th>`;
+            });
+            
+            // Add summary columns
+            headerHTML += `
+                    <th class="px-3 py-2 text-left bg-green-50">Total Hadir</th>
+                    <th class="px-3 py-2 text-left bg-yellow-50">Total Sakit</th>
+                    <th class="px-3 py-2 text-left bg-blue-50">Total Izin</th>
+                    <th class="px-3 py-2 text-left bg-red-50">Total Alpha</th>
+                    <th class="px-3 py-2 text-left bg-purple-50">Total Bolos (Jam)</th>
+                </tr>
+            `;
+            
+            tableHeader.innerHTML = headerHTML;
+            
+            // Build table body
+            tableBody.innerHTML = '';
+            rekapHarianData.students.forEach(student => {
+                const row = document.createElement('tr');
+                row.className = 'border-b hover:bg-gray-50';
+                
+                let rowHTML = `<td class="px-3 py-2 sticky left-0 bg-white font-medium">${student.nama}</td>`;
+                
+                // Add status for each date
+                rekapHarianData.dates.forEach(date => {
+                    const dayData = student.dates[date];
+                    let cellContent = '-';
+                    let cellClass = 'px-2 py-2 text-center text-xs';
+                    
+                    if (dayData) {
+                        cellContent = dayData.status;
+                        
+                        // Color coding for status
+                        switch(dayData.status) {
+                            case 'H':
+                                cellClass += ' text-green-600 font-semibold bg-green-50';
+                                break;
+                            case 'S':
+                                cellClass += ' text-yellow-600 font-semibold bg-yellow-50';
+                                break;
+                            case 'I':
+                                cellClass += ' text-blue-600 font-semibold bg-blue-50';
+                                break;
+                            case 'A':
+                                cellClass += ' text-red-600 font-semibold bg-red-50';
+                                break;
+                            case 'B':
+                                cellClass += ' text-purple-600 font-semibold bg-purple-50';
+                                break;
+                        }
+                    }
+                    
+                    rowHTML += `<td class="${cellClass}">${cellContent}</td>`;
+                });
+                
+                // Add summary columns
+                rowHTML += `
+                    <td class="px-3 py-2 text-green-600 font-semibold">${student.totalHadir}</td>
+                    <td class="px-3 py-2 text-yellow-600 font-semibold">${student.totalSakit}</td>
+                    <td class="px-3 py-2 text-blue-600 font-semibold">${student.totalIzin}</td>
+                    <td class="px-3 py-2 text-red-600 font-semibold">${student.totalAlpha}</td>
+                    <td class="px-3 py-2 text-purple-600 font-semibold">${student.totalBolosJam}</td>
+                `;
+                
+                row.innerHTML = rowHTML;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Update rekap statistics
+        function updateRekapStatistics() {
+            if (!rekapHarianData || !rekapHarianData.students) {
+                document.getElementById('rekapTotalHadir').textContent = '0';
+                document.getElementById('rekapTotalSakit').textContent = '0';
+                document.getElementById('rekapTotalIzin').textContent = '0';
+                document.getElementById('rekapTotalAlpha').textContent = '0';
+                return;
+            }
+            
+            const totalHadir = rekapHarianData.students.reduce((sum, student) => sum + student.totalHadir, 0);
+            const totalSakit = rekapHarianData.students.reduce((sum, student) => sum + student.totalSakit, 0);
+            const totalIzin = rekapHarianData.students.reduce((sum, student) => sum + student.totalIzin, 0);
+            const totalAlpha = rekapHarianData.students.reduce((sum, student) => sum + student.totalAlpha, 0);
+            
+            document.getElementById('rekapTotalHadir').textContent = totalHadir;
+            document.getElementById('rekapTotalSakit').textContent = totalSakit;
+            document.getElementById('rekapTotalIzin').textContent = totalIzin;
+            document.getElementById('rekapTotalAlpha').textContent = totalAlpha;
+        }
+        
+        // Refresh rekap harian
+        function refreshRekapHarian() {
+            loadDashboardData().then(() => {
+                generateRekapHarian();
+            });
+        }
+        
+        // Export rekap to CSV
+        function exportRekapToCSV() {
+            if (!rekapHarianData || !rekapHarianData.students || rekapHarianData.students.length === 0) {
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-6 py-4 rounded-lg z-50';
+                notification.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span>⚠️</span>
+                        <span>Tidak ada data untuk di-export!</span>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 3000);
+                return;
+            }
+            
+            // Build CSV headers
+            let headers = ['Nama Siswa'];
+            rekapHarianData.dates.forEach(date => {
+                headers.push(date);
+            });
+            headers.push('Total Hadir', 'Total Sakit', 'Total Izin', 'Total Alpha', 'Total Bolos (Jam)');
+            
+            let csvContent = headers.join(',') + '\n';
+            
+            // Build CSV rows
+            rekapHarianData.students.forEach(student => {
+                let row = [student.nama];
+                
+                // Add status for each date
+                rekapHarianData.dates.forEach(date => {
+                    const dayData = student.dates[date];
+                    row.push(dayData ? dayData.status : '-');
+                });
+                
+                // Add totals
+                row.push(
+                    student.totalHadir,
+                    student.totalSakit,
+                    student.totalIzin,
+                    student.totalAlpha,
+                    student.totalBolosJam
+                );
+                
+                csvContent += row.join(',') + '\n';
+            });
+            
+            // Generate filename based on selected class
+            const isOperator = currentUser && currentUser['Wali Kelas'].toLowerCase() === 'operator';
+            const selectedKelas = document.getElementById('rekapFilterKelas').value;
+            let filename = 'rekap_presensi_harian';
+            
+            if (isOperator && selectedKelas) {
+                filename += `_${selectedKelas.replace(/\s+/g, '_')}`;
+            } else if (!isOperator && currentUser) {
+                filename += `_${currentUser['Wali Kelas'].replace(/\s+/g, '_')}`;
+            }
+            filename += '.csv';
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg z-50';
+            notification.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span>✅</span>
+                    <span>File ${filename} berhasil di-download!</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
             setTimeout(() => {
-                message.classList.add('hidden');
-                message.classList.remove('success-animation');
-            }, 4000);
+                document.body.removeChild(notification);
+            }, 3000);
         }
 
-        // Load data saat halaman dimuat
-        window.addEventListener('load', function() {
-            jurnalData = JSON.parse(localStorage.getItem('jurnalData') || '[]');
-            presensiData = JSON.parse(localStorage.getItem('presensiData') || '[]');
-            loadKelasData(); // Muat data kelas dari CSV
+        // Initialize application
+        loadLoginData();
+        checkExistingLogin();
+
+        // KONFIGURASI - Ganti dengan URL Google Apps Script Anda
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFMp_STPBZ530Xqt8QWYU1ZxuyKTv5admLyMHBuSp1RvkNwEAodIwfFNHMjoDVWn8M0w/exec';
+        
+        // Login system variables
+        let currentUser = null;
+        let loginData = [];
+        
+        // Form submission - Google Spreadsheet integration
+        document.getElementById('adminForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="animate-spin">⏳</span> Menyimpan ke Google Spreadsheet...';
+            submitBtn.disabled = true;
+            
+            const timestamp = new Date().toLocaleString('id-ID');
+            const jurnalId = 'JRN' + Date.now();
+            
+            // Get form data
+            const namaGuru = document.getElementById('namaGuru').value;
+            const kelas = document.getElementById('kelas').value;
+            const mataPelajaran = document.getElementById('mataPelajaran').value;
+            const jamPelajaran = document.getElementById('jamPelajaran').value;
+            const materi = document.getElementById('materi').value;
+            const catatan = document.getElementById('catatan').value;
+            
+            // Prepare jurnal data
+            const jurnalEntry = {
+                idJurnal: jurnalId,
+                timestamp: timestamp,
+                namaGuru: namaGuru,
+                kelas: kelas,
+                mataPelajaran: mataPelajaran,
+                materi: materi,
+                catatan: catatan,
+                jamPelajaran: jamPelajaran
+            };
+            
+            // Prepare presensi data
+            const presensiEntries = [];
+            const namaSiswaInputs = document.querySelectorAll('input[name="namaSiswa[]"]');
+            
+            namaSiswaInputs.forEach((input, index) => {
+                const namaSiswa = input.value.trim();
+                const keteranganRadio = document.querySelector(`input[name="keterangan_${index + 1}"]:checked`);
+                const keterangan = keteranganRadio ? keteranganRadio.value : '';
+                
+                if(namaSiswa && keterangan) {
+                    presensiEntries.push({
+                        idJurnal: jurnalId,
+                        timestamp: timestamp,
+                        namaGuru: namaGuru,
+                        kelas: kelas,
+                        namaSiswa: namaSiswa,
+                        keterangan: keterangan,
+                        jamPelajaran: jamPelajaran
+                    });
+                }
+            });
+            
+            // Send to Google Spreadsheet
+            const payload = {
+                action: 'saveData',
+                jurnal: jurnalEntry,
+                presensi: presensiEntries
+            };
+            
+            // Check if Google Apps Script URL is configured
+            if (GOOGLE_APPS_SCRIPT_URL === 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                // Fallback to local storage if not configured
+                setTimeout(() => {
+                    saveDataLocally(jurnalEntry, presensiEntries, submitBtn, originalText);
+                    showConfigurationMessage();
+                }, 1000);
+                return;
+            }
+            
+            // Send to Google Apps Script
+            fetch(GOOGLE_APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            })
+            .catch(error => {
+                // Ignore errors since no-cors mode prevents reading responses
+                console.log('Request sent to Google Apps Script');
+            });
+            
+            // Show success immediately (data is sent to Google Sheets)
+            setTimeout(() => {
+                saveDataLocally(jurnalEntry, presensiEntries, submitBtn, originalText);
+                
+                // Auto-refresh dashboard data
+                refreshDashboardAfterSubmit();
+                
+                // Show success message
+                const successMsg = document.getElementById('successMessage');
+                successMsg.querySelector('span:last-child').textContent = 'Data berhasil disimpan ke Google Spreadsheet!';
+                successMsg.classList.remove('hidden');
+                successMsg.classList.add('success-animation');
+                
+                // Scroll to success message
+                successMsg.scrollIntoView({ behavior: 'smooth' });
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMsg.classList.add('hidden');
+                }, 5000);
+            }, 800);
         });
+        
+        function saveDataLocally(jurnalEntry, presensiEntries, submitBtn, originalText) {
+            // Save to local arrays for preview
+            jurnalData.push(jurnalEntry);
+            presensiData.push(...presensiEntries);
+            
+            // Save to localStorage for persistence
+            localStorage.setItem('jurnalData', JSON.stringify(jurnalData));
+            localStorage.setItem('presensiData', JSON.stringify(presensiData));
+            
+            // Update preview tables
+            updatePreviewTables();
+            
+            // Show preview
+            document.getElementById('dataPreview').classList.remove('hidden');
+            
+            // Reset form
+            document.getElementById('adminForm').reset();
+            document.getElementById('presensiContainer').innerHTML = '';
+            studentCount = 0;
+            
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+        
+        function showConfigurationMessage() {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.className = 'bg-blue-100 border border-blue-400 text-blue-700 px-6 py-4 rounded-lg mb-6';
+            successMsg.querySelector('span:first-child').textContent = 'ℹ️';
+            successMsg.querySelector('span:last-child').textContent = 'Data tersimpan lokal. Untuk integrasi Google Spreadsheet, silakan ikuti petunjuk setup di bawah.';
+            successMsg.classList.remove('hidden');
+            
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+                successMsg.className = 'hidden bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg mb-6';
+                successMsg.querySelector('span:first-child').textContent = '✅';
+                successMsg.querySelector('span:last-child').textContent = 'Data berhasil disimpan!';
+            }, 8000);
+        }
+
+        function updatePreviewTables() {
+            // Update jurnal table
+            const jurnalTableBody = document.getElementById('jurnalTableBody');
+            jurnalTableBody.innerHTML = '';
+            
+            jurnalData.forEach(entry => {
+                const row = document.createElement('tr');
+                row.className = 'border-b hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-3 py-2 font-mono text-xs">${entry.idJurnal}</td>
+                    <td class="px-3 py-2 text-xs">${entry.timestamp}</td>
+                    <td class="px-3 py-2">${entry.namaGuru}</td>
+                    <td class="px-3 py-2">${entry.kelas}</td>
+                    <td class="px-3 py-2">${entry.mataPelajaran}</td>
+                    <td class="px-3 py-2 max-w-xs truncate" title="${entry.materi}">${entry.materi}</td>
+                    <td class="px-3 py-2">${entry.jamPelajaran}</td>
+                `;
+                jurnalTableBody.appendChild(row);
+            });
+            
+            // Update presensi table
+            const presensiTableBody = document.getElementById('presensiTableBody');
+            presensiTableBody.innerHTML = '';
+            
+            presensiData.forEach(entry => {
+                const row = document.createElement('tr');
+                row.className = 'border-b hover:bg-gray-50';
+                const keteranganClass = entry.keterangan === 'Hadir' ? 'text-green-600' : 
+                                      entry.keterangan === 'Alpha' ? 'text-red-600' : 'text-yellow-600';
+                row.innerHTML = `
+                    <td class="px-3 py-2 font-mono text-xs">${entry.idJurnal}</td>
+                    <td class="px-3 py-2 text-xs">${entry.timestamp}</td>
+                    <td class="px-3 py-2">${entry.namaGuru}</td>
+                    <td class="px-3 py-2">${entry.kelas}</td>
+                    <td class="px-3 py-2">${entry.namaSiswa}</td>
+                    <td class="px-3 py-2 ${keteranganClass} font-semibold">${entry.keterangan}</td>
+                    <td class="px-3 py-2">${entry.jamPelajaran}</td>
+                `;
+                presensiTableBody.appendChild(row);
+            });
+        }
+
+        // Export to CSV function
+        function exportToCSV(type) {
+            let data, headers, filename;
+            
+            if (type === 'combined') {
+                data = filteredData.length > 0 ? filteredData : combinedData;
+                headers = ['ID Jurnal', 'Tanggal', 'Guru', 'Kelas', 'Mata Pelajaran', 'Materi', 'Jam', 'Siswa Hadir', 'Siswa Sakit', 'Siswa Izin', 'Siswa Alpha', 'Total Siswa'];
+                filename = 'data_administrasi_kelas.csv';
+            }
+            
+            if (!data || data.length === 0) {
+                // Create a simple notification instead of using successMessage
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-6 py-4 rounded-lg z-50';
+                notification.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span>⚠️</span>
+                        <span>Tidak ada data untuk di-export!</span>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 3000);
+                return;
+            }
+            
+            // Create CSV content
+            let csvContent = headers.join(',') + '\n';
+            
+            data.forEach(row => {
+                const values = headers.map(header => {
+                    let value = '';
+                    
+                    // Map headers to object keys
+                    switch(header) {
+                        case 'ID Jurnal': value = row.idJurnal || ''; break;
+                        case 'Tanggal': value = row.timestamp || ''; break;
+                        case 'Guru': value = row.namaGuru || ''; break;
+                        case 'Kelas': value = row.kelas || ''; break;
+                        case 'Mata Pelajaran': value = row.mataPelajaran || ''; break;
+                        case 'Materi': value = row.materi || ''; break;
+                        case 'Jam': value = row.jamPelajaran || ''; break;
+                        case 'Siswa Hadir': value = row.hadir || 0; break;
+                        case 'Siswa Sakit': value = row.sakit || 0; break;
+                        case 'Siswa Izin': value = row.izin || 0; break;
+                        case 'Siswa Alpha': value = row.alpha || 0; break;
+                        case 'Total Siswa': value = row.total || 0; break;
+                    }
+                    
+                    // Escape commas and quotes in CSV
+                    if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+                        value = '"' + value.replace(/"/g, '""') + '"';
+                    }
+                    return value;
+                });
+                csvContent += values.join(',') + '\n';
+            });
+            
+            // Create and download file
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg z-50';
+            notification.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span>✅</span>
+                    <span>File ${filename} berhasil di-download!</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
+        }
+
+
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98dd20a19388fdc5',t:'MTc2MDM0MDU4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ed9e4f91face6a',t:'MTc2MDUxMzUwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
