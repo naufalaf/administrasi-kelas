@@ -44,8 +44,8 @@
                          alt="Logo MTS" class="h-20 w-auto"
                          onerror="this.style.display='none';">
                 </div>
-            <!--   <h1 class="text-4xl font-bold text-gray-800 mb-2">📚 Sistem Administrasi Kelas</h1> -->
-                <p class="text-gray-600 mb-8">📚 Sistem Administrasi Kelas</p>
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">📚 Sistem Administrasi Kelas</h1>
+                <p class="text-gray-600 mb-8">Silakan login untuk melanjutkan</p>
             </div>
             
             <div class="bg-white rounded-xl shadow-lg p-8">
@@ -59,9 +59,15 @@
                     
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-                        <input type="password" id="password" required 
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                               placeholder="Masukkan password">
+                        <div class="relative">
+                            <input type="password" id="password" required 
+                                   class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                   placeholder="Masukkan password">
+                            <button type="button" onclick="togglePassword()" 
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors">
+                                <span id="passwordToggleIcon">👁️</span>
+                            </button>
+                        </div>
                     </div>
                     
                     <div>
@@ -93,33 +99,37 @@
     <div id="mainApp" class="hidden">
     <div class="container mx-auto px-4 py-8 max-w-6xl">
         <!-- Header -->
-        <div class="text-center mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <div class="flex-1"></div>
-                <div class="flex-1 text-center">
-                    <div class="flex justify-center items-center gap-4 mb-2">
+        <div class="mb-8">
+            <div class="flex justify-between items-start mb-6">
+                <!-- Logo dan Judul - Kiri -->
+                <div class="flex items-center gap-4">
+                    <div class="bg-white rounded-xl p-3 shadow-md">
                         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEit19uUj7ZanvTG4uc5p6Fc8fkoORl6bLxNN-hB-9wDcw-l5IPwmpX5Q5w6lcIfFE_Qat_o3AMrLZ1jOaBu2A5IAF1sUhJJSrQe6Vf8NdvLMqafGbdbl4xgttpRbCS7dEy6PbZrUKyeutqx34O4mQTQ3Z4UtSbaoPR79ywyjwrxXUMolyZ7oro8bsRQ/s158/LOGO%20MTS4.png" 
-                             alt="Logo MTS" class="h-16 w-auto"
+                             alt="Logo MTS" class="h-14 w-auto"
                              onerror="this.style.display='none';">
-                        <h1 class="text-4xl font-bold text-gray-800">📚 Sistem Administrasi Kelas</h1>
                     </div>
-                    <p class="text-gray-600">Input Jurnal Agenda & Presensi Siswa</p>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800 leading-tight">📚 Sistem Administrasi Kelas</h1>
+                        <p class="text-gray-600 text-sm mt-1">Input Jurnal Agenda & Presensi Siswa</p>
+                    </div>
                 </div>
-                <div class="flex-1 text-right">
-                    <div class="bg-white rounded-lg px-4 py-2 shadow-md inline-block">
-                        <div class="flex items-center gap-3">
-                            <div class="text-right">
-                                <p class="text-sm text-gray-600">Selamat datang,</p>
-                                <p class="font-semibold text-gray-800" id="welcomeUser">-</p>
-                                <p class="text-xs text-blue-600" id="userRole">-</p>
-                                <button onclick="logout()" class="text-xs text-red-600 hover:text-red-800 mt-1">Logout</button>
-                            </div>
-                            <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-                                <img id="profilePhoto" src="" alt="Profile" class="w-full h-full object-cover" 
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="w-full h-full bg-blue-500 text-white flex items-center justify-center text-lg font-bold" style="display: none;" id="profileInitial">
-                                    ?
-                                </div>
+                
+                <!-- Profile User - Kanan -->
+                <div class="bg-white rounded-xl px-5 py-3 shadow-md">
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-sm text-gray-600">Selamat datang,</p>
+                            <p class="font-semibold text-gray-800 text-lg" id="welcomeUser">-</p>
+                            <p class="text-xs text-blue-600 mb-2" id="userRole">-</p>
+                            <button onclick="logout()" class="text-xs text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-2 py-1 rounded transition-colors">
+                                🚪 Logout
+                            </button>
+                        </div>
+                        <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-200 flex-shrink-0 border-2 border-blue-100">
+                            <img id="profilePhoto" src="" alt="Profile" class="w-full h-full object-cover" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="w-full h-full bg-blue-500 text-white flex items-center justify-center text-xl font-bold" style="display: none;" id="profileInitial">
+                                ?
                             </div>
                         </div>
                     </div>
@@ -141,6 +151,10 @@
                 <button id="tabRekapHarian" onclick="switchTab('rekapHarian')" 
                         class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2" style="display: none;">
                     <span>📅</span> Rekap Presensi Harian
+                </button>
+                <button id="tabSiswaTantangan" onclick="switchTab('siswaTantangan')" 
+                        class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2" style="display: none;">
+                    <span>⚠️</span> Siswa Dengan Tantangan
                 </button>
             </div>
         </div>
@@ -380,6 +394,134 @@
             </div>
         </div>
 
+        <!-- Siswa Dengan Tantangan Tab -->
+        <div id="siswaTantanganTab" class="tab-content hidden">
+            <!-- Header -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                        <span>⚠️</span> Siswa Dengan Tantangan
+                    </h2>
+                    <button onclick="refreshSiswaTantangan()" 
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                        <span>🔄</span> Refresh Data
+                    </button>
+                </div>
+                
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                    <div class="flex items-start gap-3">
+                        <span class="text-yellow-600 text-xl">💡</span>
+                        <div>
+                            <h3 class="font-semibold text-yellow-800 mb-1">Tentang Siswa Dengan Tantangan</h3>
+                            <p class="text-yellow-700 text-sm">
+                                Halaman ini menampilkan siswa dengan tingkat kehadiran di bawah 60%. 
+                                Data ini membantu wali kelas mengidentifikasi siswa yang memerlukan perhatian khusus 
+                                dan tindak lanjut untuk meningkatkan kehadiran mereka.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Filter Section -->
+                <div class="grid md:grid-cols-2 gap-4 mb-6" id="tantanganFilterContainer">
+                    <div id="tantanganKelasFilterDiv">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                        <select id="tantanganFilterKelas" onchange="generateSiswaTantangan()" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Pilih Kelas</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Batas Kehadiran</label>
+                        <select id="tantanganBatasKehadiran" onchange="generateSiswaTantangan()" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="60">Di bawah 60%</option>
+                            <option value="70">Di bawah 70%</option>
+                            <option value="75">Di bawah 75%</option>
+                            <option value="80">Di bawah 80%</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Summary Cards -->
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-red-100 text-sm">Siswa Bermasalah</p>
+                                <p id="tantanganTotalSiswa" class="text-2xl font-bold">0</p>
+                            </div>
+                            <span class="text-3xl opacity-80">⚠️</span>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-4 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-orange-100 text-sm">Rata-rata Kehadiran</p>
+                                <p id="tantanganRataKehadiran" class="text-2xl font-bold">0%</p>
+                            </div>
+                            <span class="text-3xl opacity-80">📊</span>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-4 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-purple-100 text-sm">Perlu Tindak Lanjut</p>
+                                <p id="tantanganPerluTindakLanjut" class="text-2xl font-bold">0</p>
+                            </div>
+                            <span class="text-3xl opacity-80">🎯</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Siswa Table -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                        <span>📋</span> Daftar Siswa Dengan Tantangan
+                    </h3>
+                    <div class="flex gap-2">
+                        <button onclick="exportSiswaTantanganToCSV()" 
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                            <span>📊</span> Export CSV
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-2 text-left">No</th>
+                                <th class="px-3 py-2 text-left">Nama Siswa</th>
+                                <th class="px-3 py-2 text-left">Kelas</th>
+                                <th class="px-3 py-2 text-left">Total Hari</th>
+                                <th class="px-3 py-2 text-left">Hadir</th>
+                                <th class="px-3 py-2 text-left">Sakit</th>
+                                <th class="px-3 py-2 text-left">Izin</th>
+                                <th class="px-3 py-2 text-left">Alpha</th>
+                                <th class="px-3 py-2 text-left">Bolos (Jam)</th>
+                                <th class="px-3 py-2 text-left">% Kehadiran</th>
+                                <th class="px-3 py-2 text-left">Status</th>
+                                <th class="px-3 py-2 text-left">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="siswaTantanganTableBody">
+                            <tr>
+                                <td colspan="12" class="px-3 py-8 text-center text-gray-500">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <span class="text-4xl">⚠️</span>
+                                        <span>Pilih kelas untuk melihat siswa dengan tantangan kehadiran</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <!-- Dashboard Tab -->
         <div id="dashboardTab" class="tab-content hidden">
             <!-- Dashboard Header -->
@@ -489,7 +631,6 @@
                     <table class="w-full text-sm">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-3 py-2 text-left">ID Jurnal</th>
                                 <th class="px-3 py-2 text-left">Tanggal</th>
                                 <th class="px-3 py-2 text-left">Guru</th>
                                 <th class="px-3 py-2 text-left">Kelas</th>
@@ -502,6 +643,7 @@
                                 <th class="px-3 py-2 text-left">Siswa Alpha</th>
                                 <th class="px-3 py-2 text-left">Siswa Bolos</th>
                                 <th class="px-3 py-2 text-left">Total Siswa</th>
+                                <th class="px-3 py-2 text-left">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="combinedTableBody">
@@ -519,6 +661,137 @@
             </div>
         </div>
     </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold flex items-center gap-2">
+                            <span>📋</span> Detail Jurnal & Presensi
+                        </h2>
+                        <p class="text-blue-100 mt-1" id="modalSubtitle">ID Jurnal: -</p>
+                    </div>
+                    <button onclick="closeDetailModal()" 
+                            class="text-white hover:text-gray-200 text-2xl font-bold transition-colors">
+                        ✕
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Modal Content -->
+            <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                <!-- Jurnal Information -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>📝</span> Informasi Jurnal
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Tanggal & Waktu</label>
+                            <p id="detailTimestamp" class="text-gray-800 font-medium">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Nama Guru</label>
+                            <p id="detailGuru" class="text-gray-800 font-medium">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Kelas</label>
+                            <p id="detailKelas" class="text-gray-800 font-medium">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Mata Pelajaran</label>
+                            <p id="detailMapel" class="text-gray-800 font-medium">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Jam Pelajaran</label>
+                            <p id="detailJam" class="text-gray-800 font-medium">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Total Siswa</label>
+                            <p id="detailTotalSiswa" class="text-gray-800 font-medium">-</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Materi Pembelajaran</label>
+                        <p id="detailMateri" class="text-gray-800 bg-white p-3 rounded border">-</p>
+                    </div>
+                    <div class="mt-4" id="detailCatatanSection">
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Catatan Tambahan</label>
+                        <p id="detailCatatan" class="text-gray-800 bg-white p-3 rounded border">-</p>
+                    </div>
+                </div>
+                
+                <!-- Attendance Summary -->
+                <div class="grid md:grid-cols-5 gap-4 mb-6">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-green-600" id="detailHadir">0</div>
+                        <div class="text-sm text-green-700">✅ Hadir</div>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-yellow-600" id="detailSakit">0</div>
+                        <div class="text-sm text-yellow-700">🤒 Sakit</div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-blue-600" id="detailIzin">0</div>
+                        <div class="text-sm text-blue-700">📝 Izin</div>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-red-600" id="detailAlpha">0</div>
+                        <div class="text-sm text-red-700">❌ Alpha</div>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-purple-600" id="detailBolos">0</div>
+                        <div class="text-sm text-purple-700">🏃 Bolos</div>
+                    </div>
+                </div>
+                
+                <!-- Student List -->
+                <div class="bg-white border rounded-lg">
+                    <div class="bg-gray-50 px-6 py-4 border-b">
+                        <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                            <span>👥</span> Daftar Presensi Siswa
+                        </h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 border-b">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">No</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">Nama Siswa</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailPresensiList">
+                                <tr>
+                                    <td colspan="3" class="px-4 py-8 text-center text-gray-500">
+                                        <div class="flex flex-col items-center gap-2">
+                                            <span class="text-3xl">👥</span>
+                                            <span>Memuat data presensi...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 px-6 py-4 border-t flex justify-end gap-3">
+                <button onclick="exportDetailToCSV()" 
+                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                    <span>📊</span> Export Detail
+                </button>
+                <button onclick="closeDetailModal()" 
+                        class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    Tutup
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -545,11 +818,13 @@
             document.getElementById('inputTab').classList.add('hidden');
             document.getElementById('dashboardTab').classList.add('hidden');
             document.getElementById('rekapHarianTab').classList.add('hidden');
+            document.getElementById('siswaTantanganTab').classList.add('hidden');
             
             // Remove active class from all tab buttons
             document.getElementById('tabInput').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
             document.getElementById('tabDashboard').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
             document.getElementById('tabRekapHarian').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
+            document.getElementById('tabSiswaTantangan').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
             
             // Show selected tab and activate button
             if (tabName === 'input') {
@@ -563,6 +838,10 @@
                 document.getElementById('rekapHarianTab').classList.remove('hidden');
                 document.getElementById('tabRekapHarian').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
                 initializeRekapHarian();
+            } else if (tabName === 'siswaTantangan') {
+                document.getElementById('siswaTantanganTab').classList.remove('hidden');
+                document.getElementById('tabSiswaTantangan').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
+                initializeSiswaTantangan();
             }
         }
 
@@ -1070,7 +1349,6 @@
                 const row = document.createElement('tr');
                 row.className = 'border-b hover:bg-gray-50';
                 row.innerHTML = `
-                    <td class="px-3 py-2 font-mono text-xs">${item.idJurnal}</td>
                     <td class="px-3 py-2 text-xs">${item.timestamp}</td>
                     <td class="px-3 py-2">${item.namaGuru}</td>
                     <td class="px-3 py-2">${item.kelas}</td>
@@ -1083,6 +1361,12 @@
                     <td class="px-3 py-2 text-red-600 font-semibold">${item.alpha}</td>
                     <td class="px-3 py-2 text-purple-600 font-semibold">${item.bolos}</td>
                     <td class="px-3 py-2 font-bold">${item.total}</td>
+                    <td class="px-3 py-2">
+                        <button onclick="showJurnalDetail('${item.idJurnal}')" 
+                                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs transition-colors">
+                            📋 Detail
+                        </button>
+                    </td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -1220,8 +1504,9 @@
             if (role === 'Wali Kelas') {
                 const isOperator = user['Wali Kelas'].toLowerCase() === 'operator';
                 
-                // Show rekap harian tab for wali kelas only
+                // Show rekap harian and siswa tantangan tabs for wali kelas only
                 document.getElementById('tabRekapHarian').style.display = 'flex';
+                document.getElementById('tabSiswaTantangan').style.display = 'flex';
                 // Hide input tab for wali kelas
                 document.getElementById('tabInput').style.display = 'none';
                 
@@ -1236,8 +1521,9 @@
                 }
                 switchTab('dashboard');
             } else {
-                // Hide rekap harian tab for non-wali kelas
+                // Hide rekap harian and siswa tantangan tabs for non-wali kelas
                 document.getElementById('tabRekapHarian').style.display = 'none';
+                document.getElementById('tabSiswaTantangan').style.display = 'none';
                 // Show input tab for guru
                 document.getElementById('tabInput').style.display = 'flex';
                 // Show class filter for guru
@@ -1277,6 +1563,7 @@
             // Reset tab visibility for next login
             document.getElementById('tabInput').style.display = 'flex';
             document.getElementById('tabRekapHarian').style.display = 'none';
+            document.getElementById('tabSiswaTantangan').style.display = 'none';
             // Reset filter visibility
             document.getElementById('kelasFilterDiv').style.display = 'block';
             document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-2 gap-4';
@@ -1938,6 +2225,664 @@
             }, 3000);
         }
 
+        // Siswa Dengan Tantangan Functions
+        let siswaTantanganData = [];
+        
+        // Initialize siswa tantangan tab
+        function initializeSiswaTantangan() {
+            // Setup class filter based on user role
+            setupTantanganKelasFilter();
+            
+            // Load data
+            loadDashboardData().then(() => {
+                generateSiswaTantangan();
+            });
+        }
+        
+        // Setup class filter for siswa tantangan
+        function setupTantanganKelasFilter() {
+            const tantanganKelasFilterDiv = document.getElementById('tantanganKelasFilterDiv');
+            const tantanganFilterContainer = document.getElementById('tantanganFilterContainer');
+            const tantanganFilterKelas = document.getElementById('tantanganFilterKelas');
+            
+            if (!currentUser || currentUser.Role !== 'Wali Kelas') {
+                return;
+            }
+            
+            const isOperator = currentUser['Wali Kelas'].toLowerCase() === 'operator';
+            
+            if (isOperator) {
+                // Show class filter for operator
+                tantanganKelasFilterDiv.style.display = 'block';
+                tantanganFilterContainer.className = 'grid md:grid-cols-2 gap-4 mb-6';
+                
+                // Populate class options
+                tantanganFilterKelas.innerHTML = '<option value="">Semua Kelas</option>';
+                kelasOptions.forEach(kelas => {
+                    const option = document.createElement('option');
+                    option.value = kelas;
+                    option.textContent = kelas;
+                    tantanganFilterKelas.appendChild(option);
+                });
+            } else {
+                // Hide class filter for regular wali kelas
+                tantanganKelasFilterDiv.style.display = 'none';
+                tantanganFilterContainer.className = 'grid md:grid-cols-1 gap-4 mb-6';
+            }
+        }
+        
+        // Generate siswa dengan tantangan data
+        function generateSiswaTantangan() {
+            if (!currentUser || currentUser.Role !== 'Wali Kelas') {
+                return;
+            }
+            
+            const isOperator = currentUser['Wali Kelas'].toLowerCase() === 'operator';
+            const selectedKelas = document.getElementById('tantanganFilterKelas').value;
+            const batasKehadiran = parseInt(document.getElementById('tantanganBatasKehadiran').value);
+            
+            // Filter presensi data by class
+            let filteredPresensi = presensiData;
+            
+            if (isOperator) {
+                // Operator can filter by selected class or see all
+                if (selectedKelas) {
+                    filteredPresensi = presensiData.filter(p => p.Kelas === selectedKelas);
+                }
+                // If no class selected, show all classes
+            } else {
+                // Regular wali kelas - only their class
+                const kelasWali = currentUser['Wali Kelas'];
+                filteredPresensi = presensiData.filter(p => p.Kelas === kelasWali);
+            }
+            
+            // Calculate attendance for each student
+            const studentAttendance = {};
+            
+            filteredPresensi.forEach(p => {
+                const studentName = p['Nama Siswa'];
+                const kelas = p.Kelas;
+                
+                if (!studentAttendance[studentName]) {
+                    studentAttendance[studentName] = {
+                        nama: studentName,
+                        kelas: kelas,
+                        totalHari: 0,
+                        hadir: 0,
+                        sakit: 0,
+                        izin: 0,
+                        alpha: 0,
+                        bolosJam: 0,
+                        dates: new Set()
+                    };
+                }
+                
+                // Track unique dates for this student
+                const dateStr = p.Timestamp.split(' ')[0];
+                const jamPelajaran = parseInt(p['Jam Pelajaran'] || 1);
+                
+                // Only count each date once for total days
+                if (!studentAttendance[studentName].dates.has(dateStr)) {
+                    studentAttendance[studentName].dates.add(dateStr);
+                    studentAttendance[studentName].totalHari += 1;
+                }
+                
+                // Count attendance by type
+                switch(p.Keterangan) {
+                    case 'Hadir':
+                        studentAttendance[studentName].hadir += 1;
+                        break;
+                    case 'Sakit':
+                        studentAttendance[studentName].sakit += 1;
+                        break;
+                    case 'Izin':
+                        studentAttendance[studentName].izin += 1;
+                        break;
+                    case 'Alpha':
+                        studentAttendance[studentName].alpha += 1;
+                        break;
+                    case 'Bolos':
+                        studentAttendance[studentName].bolosJam += jamPelajaran;
+                        break;
+                }
+            });
+            
+            // Calculate attendance percentage and filter by threshold
+            siswaTantanganData = Object.values(studentAttendance)
+                .map(student => {
+                    // Calculate daily attendance based on matrix logic
+                    const totalDays = student.totalHari;
+                    let hadirDays = 0;
+                    
+                    // For simplicity, assume each attendance record represents a day
+                    // In real implementation, you'd need to group by date and apply the matrix logic
+                    hadirDays = student.hadir;
+                    
+                    const attendancePercentage = totalDays > 0 ? Math.round((hadirDays / totalDays) * 100) : 0;
+                    
+                    return {
+                        ...student,
+                        attendancePercentage: attendancePercentage,
+                        status: attendancePercentage < 50 ? 'Kritis' : 
+                               attendancePercentage < 60 ? 'Bermasalah' : 
+                               attendancePercentage < 75 ? 'Perlu Perhatian' : 'Normal'
+                    };
+                })
+                .filter(student => student.attendancePercentage < batasKehadiran)
+                .sort((a, b) => a.attendancePercentage - b.attendancePercentage); // Sort by lowest attendance first
+            
+            // Update table and statistics
+            updateSiswaTantanganTable();
+            updateTantanganStatistics();
+        }
+        
+        // Update siswa tantangan table
+        function updateSiswaTantanganTable() {
+            const tableBody = document.getElementById('siswaTantanganTableBody');
+            
+            if (!siswaTantanganData || siswaTantanganData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="12" class="px-3 py-8 text-center text-gray-500">
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="text-4xl">✅</span>
+                                <span>Tidak ada siswa dengan tantangan kehadiran pada batas yang dipilih</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tableBody.innerHTML = '';
+            siswaTantanganData.forEach((student, index) => {
+                const row = document.createElement('tr');
+                row.className = 'border-b hover:bg-gray-50';
+                
+                // Status color coding
+                let statusClass = '';
+                let statusIcon = '';
+                switch(student.status) {
+                    case 'Kritis':
+                        statusClass = 'text-red-600 bg-red-50';
+                        statusIcon = '🚨';
+                        break;
+                    case 'Bermasalah':
+                        statusClass = 'text-orange-600 bg-orange-50';
+                        statusIcon = '⚠️';
+                        break;
+                    case 'Perlu Perhatian':
+                        statusClass = 'text-yellow-600 bg-yellow-50';
+                        statusIcon = '⚡';
+                        break;
+                    default:
+                        statusClass = 'text-gray-600 bg-gray-50';
+                        statusIcon = 'ℹ️';
+                }
+                
+                // Attendance percentage color
+                let percentageClass = '';
+                if (student.attendancePercentage < 50) {
+                    percentageClass = 'text-red-600 font-bold';
+                } else if (student.attendancePercentage < 60) {
+                    percentageClass = 'text-orange-600 font-bold';
+                } else if (student.attendancePercentage < 75) {
+                    percentageClass = 'text-yellow-600 font-bold';
+                } else {
+                    percentageClass = 'text-gray-600';
+                }
+                
+                row.innerHTML = `
+                    <td class="px-3 py-2">${index + 1}</td>
+                    <td class="px-3 py-2 font-medium">${student.nama}</td>
+                    <td class="px-3 py-2">${student.kelas}</td>
+                    <td class="px-3 py-2">${student.totalHari}</td>
+                    <td class="px-3 py-2 text-green-600">${student.hadir}</td>
+                    <td class="px-3 py-2 text-yellow-600">${student.sakit}</td>
+                    <td class="px-3 py-2 text-blue-600">${student.izin}</td>
+                    <td class="px-3 py-2 text-red-600">${student.alpha}</td>
+                    <td class="px-3 py-2 text-purple-600">${student.bolosJam}</td>
+                    <td class="px-3 py-2 ${percentageClass}">${student.attendancePercentage}%</td>
+                    <td class="px-3 py-2">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${statusClass}">
+                            ${statusIcon} ${student.status}
+                        </span>
+                    </td>
+                    <td class="px-3 py-2">
+                        <button onclick="showStudentDetail('${student.nama}')" 
+                                class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs">
+                            Detail
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Update tantangan statistics
+        function updateTantanganStatistics() {
+            if (!siswaTantanganData) {
+                document.getElementById('tantanganTotalSiswa').textContent = '0';
+                document.getElementById('tantanganRataKehadiran').textContent = '0%';
+                document.getElementById('tantanganPerluTindakLanjut').textContent = '0';
+                return;
+            }
+            
+            const totalSiswa = siswaTantanganData.length;
+            const rataKehadiran = totalSiswa > 0 ? 
+                Math.round(siswaTantanganData.reduce((sum, s) => sum + s.attendancePercentage, 0) / totalSiswa) : 0;
+            const perluTindakLanjut = siswaTantanganData.filter(s => s.attendancePercentage < 50).length;
+            
+            document.getElementById('tantanganTotalSiswa').textContent = totalSiswa;
+            document.getElementById('tantanganRataKehadiran').textContent = rataKehadiran + '%';
+            document.getElementById('tantanganPerluTindakLanjut').textContent = perluTindakLanjut;
+        }
+        
+        // Show student detail (placeholder function)
+        function showStudentDetail(studentName) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-blue-100 border border-blue-400 text-blue-700 px-6 py-4 rounded-lg z-50';
+            notification.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span>ℹ️</span>
+                    <span>Detail untuk ${studentName} - Fitur akan dikembangkan lebih lanjut</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
+        }
+        
+        // Refresh siswa tantangan
+        function refreshSiswaTantangan() {
+            loadDashboardData().then(() => {
+                generateSiswaTantangan();
+            });
+        }
+        
+        // Export siswa tantangan to CSV
+        function exportSiswaTantanganToCSV() {
+            if (!siswaTantanganData || siswaTantanganData.length === 0) {
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-6 py-4 rounded-lg z-50';
+                notification.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span>⚠️</span>
+                        <span>Tidak ada data untuk di-export!</span>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 3000);
+                return;
+            }
+            
+            // Build CSV headers
+            const headers = ['No', 'Nama Siswa', 'Kelas', 'Total Hari', 'Hadir', 'Sakit', 'Izin', 'Alpha', 'Bolos (Jam)', '% Kehadiran', 'Status'];
+            let csvContent = headers.join(',') + '\n';
+            
+            // Build CSV rows
+            siswaTantanganData.forEach((student, index) => {
+                const row = [
+                    index + 1,
+                    student.nama,
+                    student.kelas,
+                    student.totalHari,
+                    student.hadir,
+                    student.sakit,
+                    student.izin,
+                    student.alpha,
+                    student.bolosJam,
+                    student.attendancePercentage + '%',
+                    student.status
+                ];
+                csvContent += row.join(',') + '\n';
+            });
+            
+            // Generate filename based on selected class
+            const isOperator = currentUser && currentUser['Wali Kelas'].toLowerCase() === 'operator';
+            const selectedKelas = document.getElementById('tantanganFilterKelas').value;
+            const batasKehadiran = document.getElementById('tantanganBatasKehadiran').value;
+            
+            let filename = 'siswa_dengan_tantangan';
+            
+            if (isOperator && selectedKelas) {
+                filename += `_${selectedKelas.replace(/\s+/g, '_')}`;
+            } else if (!isOperator && currentUser) {
+                filename += `_${currentUser['Wali Kelas'].replace(/\s+/g, '_')}`;
+            }
+            filename += `_dibawah_${batasKehadiran}persen.csv`;
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg z-50';
+            notification.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span>✅</span>
+                    <span>File ${filename} berhasil di-download!</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
+        }
+
+        // Detail Modal Functions
+        let currentDetailData = null;
+        
+        // Show jurnal detail
+        function showJurnalDetail(jurnalId) {
+            // Find jurnal data
+            const jurnalItem = jurnalData.find(j => j['Id Jurnal'] === jurnalId) || 
+                              combinedData.find(c => c.idJurnal === jurnalId);
+            
+            if (!jurnalItem) {
+                showNotification('Data jurnal tidak ditemukan!', 'error');
+                return;
+            }
+            
+            // Find related presensi data
+            const relatedPresensi = presensiData.filter(p => p['Id Jurnal'] === jurnalId);
+            
+            // Store current detail data for export
+            currentDetailData = {
+                jurnal: jurnalItem,
+                presensi: relatedPresensi
+            };
+            
+            // Populate modal with jurnal data
+            document.getElementById('modalSubtitle').textContent = `ID Jurnal: ${jurnalId}`;
+            
+            // Handle different data structures (CSV vs local)
+            const timestamp = jurnalItem.Timestamp || jurnalItem.timestamp || '-';
+            const namaGuru = jurnalItem['Nama Guru'] || jurnalItem.namaGuru || '-';
+            const kelas = jurnalItem.Kelas || jurnalItem.kelas || '-';
+            const mataPelajaran = jurnalItem['Mata Pelajaran'] || jurnalItem.mataPelajaran || '-';
+            const materi = jurnalItem.Materi || jurnalItem.materi || '-';
+            const catatan = jurnalItem.Catatan || jurnalItem.catatan || '';
+            const jamPelajaran = jurnalItem['Jam Pelajaran'] || jurnalItem.jamPelajaran || jurnalItem.Durasi || '-';
+            
+            document.getElementById('detailTimestamp').textContent = timestamp;
+            document.getElementById('detailGuru').textContent = namaGuru;
+            document.getElementById('detailKelas').textContent = kelas;
+            document.getElementById('detailMapel').textContent = mataPelajaran;
+            document.getElementById('detailMateri').textContent = materi;
+            document.getElementById('detailJam').textContent = jamPelajaran;
+            
+            // Handle catatan (hide section if empty)
+            const catatanSection = document.getElementById('detailCatatanSection');
+            const catatanElement = document.getElementById('detailCatatan');
+            if (catatan && catatan.trim() !== '') {
+                catatanElement.textContent = catatan;
+                catatanSection.style.display = 'block';
+            } else {
+                catatanSection.style.display = 'none';
+            }
+            
+            // Calculate attendance summary
+            const hadir = relatedPresensi.filter(p => p.Keterangan === 'Hadir').length;
+            const sakit = relatedPresensi.filter(p => p.Keterangan === 'Sakit').length;
+            const izin = relatedPresensi.filter(p => p.Keterangan === 'Izin').length;
+            const alpha = relatedPresensi.filter(p => p.Keterangan === 'Alpha').length;
+            const bolos = relatedPresensi.filter(p => p.Keterangan === 'Bolos').length;
+            const total = relatedPresensi.length;
+            
+            document.getElementById('detailTotalSiswa').textContent = total;
+            document.getElementById('detailHadir').textContent = hadir;
+            document.getElementById('detailSakit').textContent = sakit;
+            document.getElementById('detailIzin').textContent = izin;
+            document.getElementById('detailAlpha').textContent = alpha;
+            document.getElementById('detailBolos').textContent = bolos;
+            
+            // Populate student list
+            const presensiList = document.getElementById('detailPresensiList');
+            
+            if (relatedPresensi.length === 0) {
+                presensiList.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="px-4 py-8 text-center text-gray-500">
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="text-3xl">👥</span>
+                                <span>Tidak ada data presensi untuk jurnal ini</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                presensiList.innerHTML = '';
+                
+                // Sort students by name
+                const sortedPresensi = relatedPresensi.sort((a, b) => {
+                    const nameA = a['Nama Siswa'] || '';
+                    const nameB = b['Nama Siswa'] || '';
+                    return nameA.localeCompare(nameB);
+                });
+                
+                sortedPresensi.forEach((siswa, index) => {
+                    const row = document.createElement('tr');
+                    row.className = 'border-b hover:bg-gray-50';
+                    
+                    // Get keterangan and apply styling
+                    const keterangan = siswa.Keterangan || '-';
+                    let keteranganClass = 'px-3 py-1 rounded-full text-sm font-medium';
+                    let keteranganIcon = '';
+                    
+                    switch(keterangan) {
+                        case 'Hadir':
+                            keteranganClass += ' bg-green-100 text-green-700';
+                            keteranganIcon = '✅';
+                            break;
+                        case 'Sakit':
+                            keteranganClass += ' bg-yellow-100 text-yellow-700';
+                            keteranganIcon = '🤒';
+                            break;
+                        case 'Izin':
+                            keteranganClass += ' bg-blue-100 text-blue-700';
+                            keteranganIcon = '📝';
+                            break;
+                        case 'Alpha':
+                            keteranganClass += ' bg-red-100 text-red-700';
+                            keteranganIcon = '❌';
+                            break;
+                        case 'Bolos':
+                            keteranganClass += ' bg-purple-100 text-purple-700';
+                            keteranganIcon = '🏃';
+                            break;
+                        default:
+                            keteranganClass += ' bg-gray-100 text-gray-700';
+                            keteranganIcon = '❓';
+                    }
+                    
+                    row.innerHTML = `
+                        <td class="px-4 py-3 text-center text-sm text-gray-600">${index + 1}</td>
+                        <td class="px-4 py-3 font-medium text-gray-800">${siswa['Nama Siswa'] || '-'}</td>
+                        <td class="px-4 py-3">
+                            <span class="${keteranganClass}">
+                                ${keteranganIcon} ${keterangan}
+                            </span>
+                        </td>
+                    `;
+                    presensiList.appendChild(row);
+                });
+            }
+            
+            // Show modal
+            document.getElementById('detailModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+        
+        // Close detail modal
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+            currentDetailData = null;
+        }
+        
+        // Export detail to CSV
+        function exportDetailToCSV() {
+            if (!currentDetailData) {
+                showNotification('Tidak ada data untuk di-export!', 'error');
+                return;
+            }
+            
+            const jurnal = currentDetailData.jurnal;
+            const presensi = currentDetailData.presensi;
+            
+            // Get jurnal info
+            const jurnalId = jurnal['Id Jurnal'] || jurnal.idJurnal || '';
+            const timestamp = jurnal.Timestamp || jurnal.timestamp || '';
+            const namaGuru = jurnal['Nama Guru'] || jurnal.namaGuru || '';
+            const kelas = jurnal.Kelas || jurnal.kelas || '';
+            const mataPelajaran = jurnal['Mata Pelajaran'] || jurnal.mataPelajaran || '';
+            
+            // Create CSV content
+            let csvContent = '';
+            
+            // Add jurnal information header
+            csvContent += 'DETAIL JURNAL & PRESENSI\n';
+            csvContent += `ID Jurnal,${jurnalId}\n`;
+            csvContent += `Tanggal,${timestamp}\n`;
+            csvContent += `Guru,${namaGuru}\n`;
+            csvContent += `Kelas,${kelas}\n`;
+            csvContent += `Mata Pelajaran,${mataPelajaran}\n`;
+            csvContent += `Jam Pelajaran,${jurnal['Jam Pelajaran'] || jurnal.jamPelajaran || jurnal.Durasi || ''}\n`;
+            csvContent += `Materi,"${(jurnal.Materi || jurnal.materi || '').replace(/"/g, '""')}"\n`;
+            
+            const catatan = jurnal.Catatan || jurnal.catatan || '';
+            if (catatan.trim() !== '') {
+                csvContent += `Catatan,"${catatan.replace(/"/g, '""')}"\n`;
+            }
+            
+            csvContent += '\n';
+            
+            // Add attendance summary
+            const hadir = presensi.filter(p => p.Keterangan === 'Hadir').length;
+            const sakit = presensi.filter(p => p.Keterangan === 'Sakit').length;
+            const izin = presensi.filter(p => p.Keterangan === 'Izin').length;
+            const alpha = presensi.filter(p => p.Keterangan === 'Alpha').length;
+            const bolos = presensi.filter(p => p.Keterangan === 'Bolos').length;
+            const total = presensi.length;
+            
+            csvContent += 'RINGKASAN PRESENSI\n';
+            csvContent += `Total Siswa,${total}\n`;
+            csvContent += `Hadir,${hadir}\n`;
+            csvContent += `Sakit,${sakit}\n`;
+            csvContent += `Izin,${izin}\n`;
+            csvContent += `Alpha,${alpha}\n`;
+            csvContent += `Bolos,${bolos}\n`;
+            csvContent += '\n';
+            
+            // Add student list
+            csvContent += 'DAFTAR PRESENSI SISWA\n';
+            csvContent += 'No,Nama Siswa,Keterangan\n';
+            
+            // Sort students by name
+            const sortedPresensi = presensi.sort((a, b) => {
+                const nameA = a['Nama Siswa'] || '';
+                const nameB = b['Nama Siswa'] || '';
+                return nameA.localeCompare(nameB);
+            });
+            
+            sortedPresensi.forEach((siswa, index) => {
+                const namaSiswa = (siswa['Nama Siswa'] || '').replace(/"/g, '""');
+                csvContent += `${index + 1},"${namaSiswa}",${siswa.Keterangan || ''}\n`;
+            });
+            
+            // Generate filename
+            const dateStr = timestamp.split(' ')[0].replace(/\//g, '-');
+            const filename = `detail_jurnal_${jurnalId}_${kelas.replace(/\s+/g, '_')}_${dateStr}.csv`;
+            
+            // Download file
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification(`File ${filename} berhasil di-download!`, 'success');
+        }
+        
+        // Show notification helper
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            let bgColor = 'bg-blue-100 border-blue-400 text-blue-700';
+            let icon = 'ℹ️';
+            
+            if (type === 'success') {
+                bgColor = 'bg-green-100 border-green-400 text-green-700';
+                icon = '✅';
+            } else if (type === 'error') {
+                bgColor = 'bg-red-100 border-red-400 text-red-700';
+                icon = '❌';
+            } else if (type === 'warning') {
+                bgColor = 'bg-yellow-100 border-yellow-400 text-yellow-700';
+                icon = '⚠️';
+            }
+            
+            notification.className = `fixed top-4 right-4 ${bgColor} border px-6 py-4 rounded-lg z-50 shadow-lg`;
+            notification.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span>${icon}</span>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 4000);
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDetailModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !document.getElementById('detailModal').classList.contains('hidden')) {
+                closeDetailModal();
+            }
+        });
+
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('passwordToggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        }
+
         // Initialize application
         loadLoginData();
         checkExistingLogin();
@@ -2146,7 +3091,7 @@
             
             if (type === 'combined') {
                 data = filteredData.length > 0 ? filteredData : combinedData;
-                headers = ['ID Jurnal', 'Tanggal', 'Guru', 'Kelas', 'Mata Pelajaran', 'Materi', 'Jam', 'Siswa Hadir', 'Siswa Sakit', 'Siswa Izin', 'Siswa Alpha', 'Total Siswa'];
+                headers = ['Tanggal', 'Guru', 'Kelas', 'Mata Pelajaran', 'Materi', 'Jam', 'Siswa Hadir', 'Siswa Sakit', 'Siswa Izin', 'Siswa Alpha', 'Siswa Bolos', 'Total Siswa'];
                 filename = 'data_administrasi_kelas.csv';
             }
             
@@ -2177,7 +3122,6 @@
                     
                     // Map headers to object keys
                     switch(header) {
-                        case 'ID Jurnal': value = row.idJurnal || ''; break;
                         case 'Tanggal': value = row.timestamp || ''; break;
                         case 'Guru': value = row.namaGuru || ''; break;
                         case 'Kelas': value = row.kelas || ''; break;
@@ -2188,6 +3132,7 @@
                         case 'Siswa Sakit': value = row.sakit || 0; break;
                         case 'Siswa Izin': value = row.izin || 0; break;
                         case 'Siswa Alpha': value = row.alpha || 0; break;
+                        case 'Siswa Bolos': value = row.bolos || 0; break;
                         case 'Total Siswa': value = row.total || 0; break;
                     }
                     
@@ -2229,5 +3174,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ed9e4f91face6a',t:'MTc2MDUxMzUwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98f57d04c149c26b',t:'MTc2MDU5NjAyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
