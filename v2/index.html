@@ -99,37 +99,77 @@
     <div id="mainApp" class="hidden">
     <div class="container mx-auto px-4 py-8 max-w-6xl">
         <!-- Header -->
-        <div class="mb-8">
-            <div class="flex justify-between items-start mb-6">
-                <!-- Logo dan Judul - Kiri -->
-                <div class="flex items-center gap-4">
-                    <div class="bg-white rounded-xl p-3 shadow-md">
+        <div class="mb-6 md:mb-8">
+            <!-- Mobile Layout -->
+            <div class="block md:hidden">
+                <!-- Top Row: Logo + Title -->
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-white rounded-lg p-2 shadow-md flex-shrink-0">
                         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEit19uUj7ZanvTG4uc5p6Fc8fkoORl6bLxNN-hB-9wDcw-l5IPwmpX5Q5w6lcIfFE_Qat_o3AMrLZ1jOaBu2A5IAF1sUhJJSrQe6Vf8NdvLMqafGbdbl4xgttpRbCS7dEy6PbZrUKyeutqx34O4mQTQ3Z4UtSbaoPR79ywyjwrxXUMolyZ7oro8bsRQ/s158/LOGO%20MTS4.png" 
-                             alt="Logo MTS" class="h-14 w-auto"
+                             alt="Logo MTS" class="h-10 w-auto"
                              onerror="this.style.display='none';">
                     </div>
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-800 leading-tight">📚 Sistem Administrasi Kelas</h1>
-                        <p class="text-gray-600 text-sm mt-1">Input Jurnal Agenda & Presensi Siswa</p>
+                    <div class="min-w-0 flex-1">
+                        <h1 class="text-lg font-bold text-gray-800 leading-tight truncate">📚 Sistem Administrasi</h1>
+                        <p class="text-gray-600 text-xs mt-1 truncate">Input Jurnal & Presensi</p>
                     </div>
                 </div>
                 
-                <!-- Profile User - Kanan -->
-                <div class="bg-white rounded-xl px-5 py-3 shadow-md">
-                    <div class="flex items-center gap-4">
-                        <div class="text-right">
-                            <p class="text-sm text-gray-600">Selamat datang,</p>
-                            <p class="font-semibold text-gray-800 text-lg" id="welcomeUser">-</p>
-                            <p class="text-xs text-blue-600 mb-2" id="userRole">-</p>
+                <!-- Bottom Row: Profile -->
+                <div class="bg-white rounded-xl px-4 py-3 shadow-md">
+                    <div class="flex items-center justify-between">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs text-gray-600">Selamat datang,</p>
+                            <p class="font-semibold text-gray-800 text-sm truncate" id="welcomeUserMobile">-</p>
+                            <p class="text-xs text-blue-600 mb-2 truncate" id="userRoleMobile">-</p>
                             <button onclick="logout()" class="text-xs text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-2 py-1 rounded transition-colors">
                                 🚪 Logout
                             </button>
                         </div>
-                        <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-200 flex-shrink-0 border-2 border-blue-100">
-                            <img id="profilePhoto" src="" alt="Profile" class="w-full h-full object-cover" 
+                        <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex-shrink-0 border-2 border-blue-100 ml-3">
+                            <img id="profilePhotoMobile" src="" alt="Profile" class="w-full h-full object-cover" 
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="w-full h-full bg-blue-500 text-white flex items-center justify-center text-xl font-bold" style="display: none;" id="profileInitial">
+                            <div class="w-full h-full bg-blue-500 text-white flex items-center justify-center text-lg font-bold" style="display: none;" id="profileInitialMobile">
                                 ?
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Desktop Layout -->
+            <div class="hidden md:block">
+                <div class="flex justify-between items-start mb-6">
+                    <!-- Logo dan Judul - Kiri -->
+                    <div class="flex items-center gap-4">
+                        <div class="bg-white rounded-xl p-3 shadow-md">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEit19uUj7ZanvTG4uc5p6Fc8fkoORl6bLxNN-hB-9wDcw-l5IPwmpX5Q5w6lcIfFE_Qat_o3AMrLZ1jOaBu2A5IAF1sUhJJSrQe6Vf8NdvLMqafGbdbl4xgttpRbCS7dEy6PbZrUKyeutqx34O4mQTQ3Z4UtSbaoPR79ywyjwrxXUMolyZ7oro8bsRQ/s158/LOGO%20MTS4.png" 
+                                 alt="Logo MTS" class="h-14 w-auto"
+                                 onerror="this.style.display='none';">
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-800 leading-tight">📚 Sistem Administrasi Kelas</h1>
+                            <p class="text-gray-600 text-sm mt-1">Input Jurnal Agenda & Presensi Siswa</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Profile User - Kanan -->
+                    <div class="bg-white rounded-xl px-5 py-3 shadow-md">
+                        <div class="flex items-center gap-4">
+                            <div class="text-right">
+                                <p class="text-sm text-gray-600">Selamat datang,</p>
+                                <p class="font-semibold text-gray-800 text-lg" id="welcomeUser">-</p>
+                                <p class="text-xs text-blue-600 mb-2" id="userRole">-</p>
+                                <button onclick="logout()" class="text-xs text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-2 py-1 rounded transition-colors">
+                                    🚪 Logout
+                                </button>
+                            </div>
+                            <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-200 flex-shrink-0 border-2 border-blue-100">
+                                <img id="profilePhoto" src="" alt="Profile" class="w-full h-full object-cover" 
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="w-full h-full bg-blue-500 text-white flex items-center justify-center text-xl font-bold" style="display: none;" id="profileInitial">
+                                    ?
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -139,23 +179,48 @@
 
         <!-- Tab Navigation -->
         <div class="bg-white rounded-xl shadow-lg mb-6 p-2">
-            <div class="flex gap-2" id="tabNavigation">
-                <button id="tabInput" onclick="switchTab('input')" 
-                        class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2">
-                    <span>📝</span> Input Data
-                </button>
-                <button id="tabDashboard" onclick="switchTab('dashboard')" 
-                        class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2">
-                    <span>📊</span> Dashboard
-                </button>
-                <button id="tabRekapHarian" onclick="switchTab('rekapHarian')" 
-                        class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2" style="display: none;">
-                    <span>📅</span> Rekap Presensi Harian
-                </button>
-                <button id="tabSiswaTantangan" onclick="switchTab('siswaTantangan')" 
-                        class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2" style="display: none;">
-                    <span>⚠️</span> Siswa Dengan Tantangan
-                </button>
+            <!-- Mobile Tab Navigation -->
+            <div class="block md:hidden">
+                <div class="grid grid-cols-2 gap-2" id="tabNavigationMobile">
+                    <button id="tabInputMobile" onclick="switchTab('input')" 
+                            class="py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-1 text-sm">
+                        <span>📝</span> Input
+                    </button>
+                    <button id="tabDashboardMobile" onclick="switchTab('dashboard')" 
+                            class="py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-1 text-sm">
+                        <span>📊</span> Dashboard
+                    </button>
+                    <button id="tabRekapHarianMobile" onclick="switchTab('rekapHarian')" 
+                            class="py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-1 text-sm" style="display: none;">
+                        <span>📅</span> Rekap
+                    </button>
+                    <button id="tabSiswaTantanganMobile" onclick="switchTab('siswaTantangan')" 
+                            class="py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-1 text-sm" style="display: none;">
+                        <span>⚠️</span> Tantangan
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Desktop Tab Navigation -->
+            <div class="hidden md:block">
+                <div class="flex gap-2" id="tabNavigation">
+                    <button id="tabInput" onclick="switchTab('input')" 
+                            class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2">
+                        <span>📝</span> Input Data
+                    </button>
+                    <button id="tabDashboard" onclick="switchTab('dashboard')" 
+                            class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2">
+                        <span>📊</span> Dashboard
+                    </button>
+                    <button id="tabRekapHarian" onclick="switchTab('rekapHarian')" 
+                            class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2" style="display: none;">
+                        <span>📅</span> Rekap Presensi Harian
+                    </button>
+                    <button id="tabSiswaTantangan" onclick="switchTab('siswaTantangan')" 
+                            class="flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2" style="display: none;">
+                        <span>⚠️</span> Siswa Dengan Tantangan
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -820,27 +885,37 @@
             document.getElementById('rekapHarianTab').classList.add('hidden');
             document.getElementById('siswaTantanganTab').classList.add('hidden');
             
-            // Remove active class from all tab buttons
+            // Remove active class from all tab buttons (Desktop)
             document.getElementById('tabInput').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
             document.getElementById('tabDashboard').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
             document.getElementById('tabRekapHarian').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
             document.getElementById('tabSiswaTantangan').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-2';
             
+            // Remove active class from all tab buttons (Mobile)
+            document.getElementById('tabInputMobile').className = 'py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-1 text-sm';
+            document.getElementById('tabDashboardMobile').className = 'py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-1 text-sm';
+            document.getElementById('tabRekapHarianMobile').className = 'py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-1 text-sm';
+            document.getElementById('tabSiswaTantanganMobile').className = 'py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-inactive flex items-center justify-center gap-1 text-sm';
+            
             // Show selected tab and activate button
             if (tabName === 'input') {
                 document.getElementById('inputTab').classList.remove('hidden');
                 document.getElementById('tabInput').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
+                document.getElementById('tabInputMobile').className = 'py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-1 text-sm';
             } else if (tabName === 'dashboard') {
                 document.getElementById('dashboardTab').classList.remove('hidden');
                 document.getElementById('tabDashboard').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
+                document.getElementById('tabDashboardMobile').className = 'py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-1 text-sm';
                 loadDashboardData();
             } else if (tabName === 'rekapHarian') {
                 document.getElementById('rekapHarianTab').classList.remove('hidden');
                 document.getElementById('tabRekapHarian').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
+                document.getElementById('tabRekapHarianMobile').className = 'py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-1 text-sm';
                 initializeRekapHarian();
             } else if (tabName === 'siswaTantangan') {
                 document.getElementById('siswaTantanganTab').classList.remove('hidden');
                 document.getElementById('tabSiswaTantangan').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
+                document.getElementById('tabSiswaTantanganMobile').className = 'py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-1 text-sm';
                 initializeSiswaTantangan();
             }
         }
@@ -1457,8 +1532,11 @@
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             
-            // Update profile display
+            // Update profile display (Desktop)
             document.getElementById('welcomeUser').textContent = user['Nama Guru'] || user['Nama Lengkap'];
+            
+            // Update profile display (Mobile)
+            document.getElementById('welcomeUserMobile').textContent = user['Nama Guru'] || user['Nama Lengkap'];
             
             // Handle operator role display
             let roleDisplay = role;
@@ -1470,21 +1548,39 @@
                 }
             }
             document.getElementById('userRole').textContent = roleDisplay;
+            document.getElementById('userRoleMobile').textContent = roleDisplay;
             
-            // Set profile photo
+            // Set profile photo (Desktop)
             const profilePhoto = document.getElementById('profilePhoto');
             const profileInitial = document.getElementById('profileInitial');
             
+            // Set profile photo (Mobile)
+            const profilePhotoMobile = document.getElementById('profilePhotoMobile');
+            const profileInitialMobile = document.getElementById('profileInitialMobile');
+            
             if (user.Foto && user.Foto.trim() !== '') {
+                // Desktop
                 profilePhoto.src = user.Foto;
                 profilePhoto.style.display = 'block';
                 profileInitial.style.display = 'none';
+                
+                // Mobile
+                profilePhotoMobile.src = user.Foto;
+                profilePhotoMobile.style.display = 'block';
+                profileInitialMobile.style.display = 'none';
             } else {
                 // Show initial if no photo
                 const initial = (user['Nama Guru'] || user['Nama Lengkap'] || '?').charAt(0).toUpperCase();
+                
+                // Desktop
                 profileInitial.textContent = initial;
                 profilePhoto.style.display = 'none';
                 profileInitial.style.display = 'flex';
+                
+                // Mobile
+                profileInitialMobile.textContent = initial;
+                profilePhotoMobile.style.display = 'none';
+                profileInitialMobile.style.display = 'flex';
             }
             
             // Auto-fill form fields for guru
@@ -1504,11 +1600,17 @@
             if (role === 'Wali Kelas') {
                 const isOperator = user['Wali Kelas'].toLowerCase() === 'operator';
                 
-                // Show rekap harian and siswa tantangan tabs for wali kelas only
+                // Show rekap harian and siswa tantangan tabs for wali kelas only (Desktop)
                 document.getElementById('tabRekapHarian').style.display = 'flex';
                 document.getElementById('tabSiswaTantangan').style.display = 'flex';
-                // Hide input tab for wali kelas
+                // Hide input tab for wali kelas (Desktop)
                 document.getElementById('tabInput').style.display = 'none';
+                
+                // Show rekap harian and siswa tantangan tabs for wali kelas only (Mobile)
+                document.getElementById('tabRekapHarianMobile').style.display = 'block';
+                document.getElementById('tabSiswaTantanganMobile').style.display = 'block';
+                // Hide input tab for wali kelas (Mobile)
+                document.getElementById('tabInputMobile').style.display = 'none';
                 
                 if (isOperator) {
                     // Operator can see all classes - show class filter
@@ -1521,11 +1623,18 @@
                 }
                 switchTab('dashboard');
             } else {
-                // Hide rekap harian and siswa tantangan tabs for non-wali kelas
+                // Hide rekap harian and siswa tantangan tabs for non-wali kelas (Desktop)
                 document.getElementById('tabRekapHarian').style.display = 'none';
                 document.getElementById('tabSiswaTantangan').style.display = 'none';
-                // Show input tab for guru
+                // Show input tab for guru (Desktop)
                 document.getElementById('tabInput').style.display = 'flex';
+                
+                // Hide rekap harian and siswa tantangan tabs for non-wali kelas (Mobile)
+                document.getElementById('tabRekapHarianMobile').style.display = 'none';
+                document.getElementById('tabSiswaTantanganMobile').style.display = 'none';
+                // Show input tab for guru (Mobile)
+                document.getElementById('tabInputMobile').style.display = 'block';
+                
                 // Show class filter for guru
                 document.getElementById('kelasFilterDiv').style.display = 'block';
                 document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-2 gap-4';
@@ -1550,20 +1659,32 @@
             document.getElementById('mataPelajaran').readOnly = false;
             document.getElementById('mataPelajaran').classList.remove('bg-gray-100');
             
-            // Reset profile display
+            // Reset profile display (Desktop)
             document.getElementById('welcomeUser').textContent = '-';
             document.getElementById('userRole').textContent = '-';
             document.getElementById('profilePhoto').src = '';
             document.getElementById('profileInitial').textContent = '?';
             
+            // Reset profile display (Mobile)
+            document.getElementById('welcomeUserMobile').textContent = '-';
+            document.getElementById('userRoleMobile').textContent = '-';
+            document.getElementById('profilePhotoMobile').src = '';
+            document.getElementById('profileInitialMobile').textContent = '?';
+            
             // Show login screen
             document.getElementById('mainApp').classList.add('hidden');
             document.getElementById('loginScreen').classList.remove('hidden');
             
-            // Reset tab visibility for next login
+            // Reset tab visibility for next login (Desktop)
             document.getElementById('tabInput').style.display = 'flex';
             document.getElementById('tabRekapHarian').style.display = 'none';
             document.getElementById('tabSiswaTantangan').style.display = 'none';
+            
+            // Reset tab visibility for next login (Mobile)
+            document.getElementById('tabInputMobile').style.display = 'block';
+            document.getElementById('tabRekapHarianMobile').style.display = 'none';
+            document.getElementById('tabSiswaTantanganMobile').style.display = 'none';
+            
             // Reset filter visibility
             document.getElementById('kelasFilterDiv').style.display = 'block';
             document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-2 gap-4';
@@ -3174,5 +3295,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98f57d04c149c26b',t:'MTc2MDU5NjAyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98f64cefc1735ffa',t:'MTc2MDYwNDU0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
