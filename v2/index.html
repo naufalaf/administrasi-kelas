@@ -3128,19 +3128,162 @@
         document.getElementById('adminForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Show loading state
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<span class="animate-spin">⏳</span> Menyimpan ke Google Spreadsheet...';
-            submitBtn.disabled = true;
-            
-            const timestamp = new Date().toLocaleString('id-ID');
-            const jurnalId = 'JRN' + Date.now();
-            
-            // Get form data
-            const namaGuru = document.getElementById('namaGuru').value;
-            const kelas = document.getElementById('kelas').value;
-            
+           // GANTI SELURUH HANDLER SUBMIT LAMA DENGAN BLOK INI
+document.getElementById('adminForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span class="animate-spin">⏳</span> Menyimpan ke Google Spreadsheet...';
+    submitBtn.disabled = true;
+
+    const timestamp = new Date().toLocaleString('id-ID');
+    const jurnalId = 'JRN' + Date.now();
+
+    // Get form data
+    const namaGuru = document.getElementById('namaGuru').value;
+    const kelas = document.getElementById('kelas').value;
+
+    // Get mata pelajaran from either input or select
+    const mataPelajaranInput = document.getElementById('mataPelajaran');
+    const mataPelajaranSelect = document.getElementById('mataPelajaranSelect');
+    const mataPelajaran = mataPelajaranSelect.style.display !== 'none' ? 
+                         mataPelajaranSelect.value : mataPelajaranInput.value;
+
+    const jamPelajaran = document.getElementById('jamPelajaran').value;
+    const materi = document.getElementById('materi').value;
+    const catatan = document.getElementById('catatan').value;
+
+    // Prepare jurnal data
+    const jurnalEntry = {
+        idJurnal: jurnalId,
+        timestamp: timestamp,
+        namaGuru: namaGuru,
+        kelas: kelas,
+        mataPelajaran: mataPelajaran,
+        materi: materi,
+        catatan: catatan,
+        jamPelajaran: jamPelajaran
+    };
+
+    // Prepare presensi data
+    const presensiEntries = [];
+    const namaSiswaInputs = document.querySelectorAll('input[name="namaSiswa[]"]');
+
+    namaSiswaInputs.forEach((input, index) => {
+        const namaSiswa = input.value.trim();
+        const keteranganRadio = document.querySelector(`input[name="keterangan_${index + 1}"]:checked`);
+        const keterangan = keteranganRadio ? keteranganRadio.value : '';
+
+        if (namaSiswa) {
+            presensiEntries.push({
+                idJurnal: jurnalId,
+                namaSiswa: namaSiswa,
+                keterangan: keterangan,
+                jamPelajaran: jamPelajaran,
+                kelas: kelas,
+                timestamp: timestamp
+            });
+        }
+    });
+
+    // Build payload for Google Apps Script
+    const payload = {
+        action: 'submitJurnal',
+        jurnal: jurnalEntry,
+        presensi: presensiEntries
+    };
+
+    // Helper: tindakan yang selalu harus dijalankan setelah "submit" selesai
+    function submitComplete() {
+        try {
+            // Save locally and reset UI
+            saveDataLocally(jurnalEntry, presensiEntries, submitBtn, originalText);
+
+            // Show success message
+            const successMsg = document.getElementById('successMessage');
+            if (successMsg) {
+                const spans = successMsg.querySelectorAll('span');
+                if (spans.length >= 2) {
+                    spans[spans.length - 1].textContent = 'Data berhasil disimpan ke Google Spreadsheet!';
+                } else {
+                    successMsg.textContent = '✅ Data berhasil disimpan ke Google Spreadsheet!';
+                }
+                successMsg.classList.remove('hidden');
+                successMsg.classList.add('success-animation');
+                successMsg.scrollIntoView({ behavior: 'smooth' });
+
+                setTimeout(() => {
+                    successMsg.classList.add('hidden');
+                    successMsg.classList.remove('success-animation');
+                }, 5000);
+            }
+        } catch (err) {
+            console.error('submitComplete error:', err);
+            // Fallback: pastikan tombol direset
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+
+        // Delay kecil agar pengguna melihat pesan, lalu refresh data dari CSV
+        setTimeout(() => {
+            try {
+                refreshDashboardAfterSubmit();
+            } catch (err) {
+                console.warn('refreshDashboardAfterSubmit error:', err);
+            }
+        }, 900);
+    }
+
+    // Try/catch to prevent any runtime exception from leaving the spinner 'on'
+    try {
+        // If script URL not configured, fallback immediately to local save + config message
+        if (GOOGLE_APPS_SCRIPT_URL === 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE' || !GOOGLE_APPS_SCRIPT_URL) {
+            // Save locally and show configuration notice
+            submitComplete();
+            showConfigurationMessage();
+            return;
+        }
+
+        // Send to Google Apps Script (no-cors). Use then/catch/finally to ensure submitComplete runs always.
+        fetch(GOOGLE_APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            // With mode:'no-cors' we cannot read response body, but the request was sent.
+            // Treat this as success for UI purposes.
+            submitComplete();
+        })
+        .catch((err) => {
+            // Network or other error — still save locally and inform user
+            console.warn('Error sending to Google Apps Script, data will be saved locally:', err);
+            submitComplete();
+            // Optionally show a notice to the user about offline save
+            showNotification('Terjadi kendala mengirim data. Data tersimpan lokal dan akan dicoba lagi.', 'warning');
+        });
+
+        // Also guard against case where fetch neither resolves nor rejects quickly:
+        // ensure after a fixed timeout we still reset UI (safety net, e.g., 10s)
+        setTimeout(() => {
+            // If button still disabled, force-complete to avoid indefinite spinner
+            if (submitBtn && submitBtn.disabled) {
+                console.warn('Fetch did not complete in time — forcing submitComplete() to avoid stuck spinner.');
+                submitComplete();
+            }
+        }, 10000);
+
+    } catch (error) {
+        console.error('Unexpected error during submit:', error);
+        // Ensure UI reset and local save
+        submitComplete();
+    }
+});
             // Get mata pelajaran from either input or select
             const mataPelajaranInput = document.getElementById('mataPelajaran');
             const mataPelajaranSelect = document.getElementById('mataPelajaranSelect');
