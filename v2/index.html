@@ -3133,6 +3133,25 @@
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<span class="animate-spin">⏳</span> Menyimpan ke Google Spreadsheet...';
             submitBtn.disabled = true;
+        
+            // Safety: jika fetch / alur submit macet, kembalikan tombol ke kondisi normal setelah 10s
+window.submitSafetyTimeout = setTimeout(() => {
+    try {
+        if (submitBtn && submitBtn.disabled) {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            // Opsional: beri notifikasi kecil ke pengguna
+            if (typeof showNotification === 'function') {
+                showNotification('Permintaan memakan waktu lebih lama dari biasanya. Periksa koneksi. Data mungkin sudah tersimpan.', 'warning');
+            } else {
+                console.warn('Submit safety timeout triggered: tombol di-reset.');
+            }
+        }
+    } catch (err) {
+        console.error('submitSafetyTimeout error:', err);
+    }
+}, 10000); // 10 detik
+
             
             const timestamp = new Date().toLocaleString('id-ID');
             const jurnalId = 'JRN' + Date.now();
@@ -3240,6 +3259,10 @@
         });
         
         function saveDataLocally(jurnalEntry, presensiEntries, submitBtn, originalText) {
+           if (window.submitSafetyTimeout) {
+        clearTimeout(window.submitSafetyTimeout);
+        window.submitSafetyTimeout = null;
+    }
             // Save to local arrays for preview
             jurnalData.push(jurnalEntry);
             presensiData.push(...presensiEntries);
