@@ -252,6 +252,10 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Mata Pelajaran</label>
                         <input type="text" id="mataPelajaran" required 
                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        <select id="mataPelajaranSelect" required style="display: none;"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="">Pilih Mata Pelajaran</option>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Jam Pelajaran</label>
@@ -637,12 +641,19 @@
             <!-- Filter Section -->
             <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">🔍 Filter Data</h3>
-                <div class="grid md:grid-cols-2 gap-4" id="dashboardFilterContainer">
+                <div class="grid md:grid-cols-3 gap-4" id="dashboardFilterContainer">
                     <div id="kelasFilterDiv">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
                         <select id="filterKelas" onchange="applyFilters()" 
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                             <option value="">Semua Kelas</option>
+                        </select>
+                    </div>
+                    <div id="mapelFilterDiv" style="display: none;">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Mata Pelajaran</label>
+                        <select id="filterMapel" onchange="applyFilters()" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Semua Mata Pelajaran</option>
                         </select>
                     </div>
                     <div>
@@ -907,7 +918,9 @@
                 document.getElementById('dashboardTab').classList.remove('hidden');
                 document.getElementById('tabDashboard').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
                 document.getElementById('tabDashboardMobile').className = 'py-2 px-3 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-1 text-sm';
-                loadDashboardData();
+                loadDashboardData().then(() => {
+                    setupSubjectFilter(); // Setup subject filter after data is loaded
+                });
             } else if (tabName === 'rekapHarian') {
                 document.getElementById('rekapHarianTab').classList.remove('hidden');
                 document.getElementById('tabRekapHarian').className = 'flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-300 tab-active flex items-center justify-center gap-2';
@@ -1318,6 +1331,7 @@
         // Apply filters with optional date range
         function applyFiltersWithDateRange(startDate = null, endDate = null) {
             const filterKelas = document.getElementById('filterKelas').value;
+            const filterMapel = document.getElementById('filterMapel').value;
             const filterTanggalDari = document.getElementById('filterTanggalDari').value;
             const filterTanggalSampai = document.getElementById('filterTanggalSampai').value;
             
@@ -1341,6 +1355,7 @@
                 }
                 
                 if (filterKelas && item.kelas !== filterKelas) match = false;
+                if (filterMapel && item.mataPelajaran !== filterMapel) match = false;
                 
                 // Parse item date - handle Indonesian format from Google Sheets
                 const itemDateStr = item.timestamp.split(' ')[0];
@@ -1496,6 +1511,95 @@
             }
         }
 
+        // Check if teacher teaches multiple subjects
+        function getTeacherSubjects(teacherName) {
+            const teacherEntries = loginData.filter(user => 
+                (user['Nama Guru'] || user['Nama Lengkap']) === teacherName
+            );
+            
+            const subjects = teacherEntries
+                .map(entry => entry.Mapel)
+                .filter(mapel => mapel && mapel.trim() !== '');
+            
+            return [...new Set(subjects)]; // Remove duplicates
+        }
+
+        // Setup subject selection for teacher
+        function setupSubjectSelection(teacherName) {
+            const subjects = getTeacherSubjects(teacherName);
+            const mataPelajaranInput = document.getElementById('mataPelajaran');
+            const mataPelajaranSelect = document.getElementById('mataPelajaranSelect');
+            
+            if (subjects.length > 1) {
+                // Teacher teaches multiple subjects - show dropdown
+                mataPelajaranInput.style.display = 'none';
+                mataPelajaranInput.required = false;
+                mataPelajaranSelect.style.display = 'block';
+                mataPelajaranSelect.required = true;
+                
+                // Clear and populate dropdown
+                mataPelajaranSelect.innerHTML = '<option value="">Pilih Mata Pelajaran</option>';
+                subjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject;
+                    option.textContent = subject;
+                    mataPelajaranSelect.appendChild(option);
+                });
+            } else if (subjects.length === 1) {
+                // Teacher teaches only one subject - show input with value
+                mataPelajaranInput.style.display = 'block';
+                mataPelajaranInput.required = true;
+                mataPelajaranSelect.style.display = 'none';
+                mataPelajaranSelect.required = false;
+                
+                mataPelajaranInput.value = subjects[0];
+                mataPelajaranInput.readOnly = true;
+                mataPelajaranInput.classList.add('bg-gray-100');
+            } else {
+                // No subject data - show empty input
+                mataPelajaranInput.style.display = 'block';
+                mataPelajaranInput.required = true;
+                mataPelajaranSelect.style.display = 'none';
+                mataPelajaranSelect.required = false;
+                
+                mataPelajaranInput.value = '';
+                mataPelajaranInput.readOnly = false;
+                mataPelajaranInput.classList.remove('bg-gray-100');
+            }
+        }
+
+        // Setup subject filter for dashboard
+        function setupSubjectFilter() {
+            if (!currentUser || currentUser.Role !== 'Guru') {
+                // Hide subject filter for non-guru users
+                document.getElementById('mapelFilterDiv').style.display = 'none';
+                document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-2 gap-4';
+                return;
+            }
+            
+            const teacherName = currentUser['Nama Guru'] || currentUser['Nama Lengkap'];
+            const subjects = getTeacherSubjects(teacherName);
+            
+            if (subjects.length > 1) {
+                // Show subject filter for multi-subject teachers
+                document.getElementById('mapelFilterDiv').style.display = 'block';
+                document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-3 gap-4';
+                
+                const filterMapel = document.getElementById('filterMapel');
+                filterMapel.innerHTML = '<option value="">Semua Mata Pelajaran</option>';
+                subjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject;
+                    option.textContent = subject;
+                    filterMapel.appendChild(option);
+                });
+            } else {
+                // Hide subject filter for single-subject teachers
+                document.getElementById('mapelFilterDiv').style.display = 'none';
+                document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-2 gap-4';
+            }
+        }
+
         // Login function
         async function handleLogin(username, password, role) {
             if (loginData.length === 0) {
@@ -1586,15 +1690,13 @@
             
             // Auto-fill form fields for guru
             if (role === 'Guru') {
-                document.getElementById('namaGuru').value = user['Nama Guru'] || user['Nama Lengkap'];
+                const teacherName = user['Nama Guru'] || user['Nama Lengkap'];
+                document.getElementById('namaGuru').value = teacherName;
                 document.getElementById('namaGuru').readOnly = true;
                 document.getElementById('namaGuru').classList.add('bg-gray-100');
                 
-                if (user.Mapel) {
-                    document.getElementById('mataPelajaran').value = user.Mapel;
-                    document.getElementById('mataPelajaran').readOnly = true;
-                    document.getElementById('mataPelajaran').classList.add('bg-gray-100');
-                }
+                // Setup subject selection based on teacher's subjects
+                setupSubjectSelection(teacherName);
             }
             
             // Handle role-based access
@@ -1638,7 +1740,7 @@
                 
                 // Show class filter for guru
                 document.getElementById('kelasFilterDiv').style.display = 'block';
-                document.getElementById('dashboardFilterContainer').className = 'grid md:grid-cols-2 gap-4';
+                setupSubjectFilter(); // Setup subject filter based on teacher's subjects
             }
             
             // Load initial data
@@ -1657,8 +1759,14 @@
             document.getElementById('adminForm').reset();
             document.getElementById('namaGuru').readOnly = false;
             document.getElementById('namaGuru').classList.remove('bg-gray-100');
+            
+            // Reset subject fields
+            document.getElementById('mataPelajaran').style.display = 'block';
+            document.getElementById('mataPelajaran').required = true;
             document.getElementById('mataPelajaran').readOnly = false;
             document.getElementById('mataPelajaran').classList.remove('bg-gray-100');
+            document.getElementById('mataPelajaranSelect').style.display = 'none';
+            document.getElementById('mataPelajaranSelect').required = false;
             
             // Reset profile display (Desktop)
             document.getElementById('welcomeUser').textContent = '-';
@@ -3032,7 +3140,13 @@
             // Get form data
             const namaGuru = document.getElementById('namaGuru').value;
             const kelas = document.getElementById('kelas').value;
-            const mataPelajaran = document.getElementById('mataPelajaran').value;
+            
+            // Get mata pelajaran from either input or select
+            const mataPelajaranInput = document.getElementById('mataPelajaran');
+            const mataPelajaranSelect = document.getElementById('mataPelajaranSelect');
+            const mataPelajaran = mataPelajaranSelect.style.display !== 'none' ? 
+                                 mataPelajaranSelect.value : mataPelajaranInput.value;
+            
             const jamPelajaran = document.getElementById('jamPelajaran').value;
             const materi = document.getElementById('materi').value;
             const catatan = document.getElementById('catatan').value;
@@ -3296,5 +3410,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98f66677035c5fea',t:'MTc2MDYwNTU4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98fc44c05573a8e1',t:'MTc2MDY2NzEyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
