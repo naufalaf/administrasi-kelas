@@ -294,6 +294,14 @@
                     <div class="mb-4">
                         <h3 class="text-xl font-semibold text-gray-800">👥 Presensi Siswa</h3>
                     </div>
+                    <div class="flex space-x-2">
+                                            <button onclick="bulkAction('Hadir')" class="px-3 py-1 bg-green-500 hover:bg-green-600 text-white text-sm rounded-lg transition duration-200">
+                                                ✓ Semua Hadir
+                                            </button>
+                                            <button onclick="resetAllStatus()" class="px-3 py-1 bg-gray-500 hover:bg-gray-600 text-white text-sm rounded-lg transition duration-200">
+                                                🔄 Reset
+                                            </button>
+                                        </div>
                     <div id="presensiContainer" class="space-y-3">
                         <!-- Student rows will be added here -->
                     </div>
@@ -2359,7 +2367,22 @@
             document.getElementById('rekapTotalIzin').textContent = totalIzin;
             document.getElementById('rekapTotalAlpha').textContent = totalAlpha;
         }
-        
+        // bulk action
+         function bulkAction(status) {
+            const statusInputs = document.querySelectorAll('.siswa-status');
+            statusInputs.forEach(input => {
+                if (input.value === status) {
+                    input.checked = true;
+                }
+            });
+        }
+
+        function resetAllStatus() {
+            const statusInputs = document.querySelectorAll('.siswa-status');
+            statusInputs.forEach(input => {
+                input.checked = false;
+            });
+        }
         // Refresh rekap harian
         function refreshRekapHarian() {
             loadDashboardData().then(() => {
